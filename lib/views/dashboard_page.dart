@@ -48,7 +48,7 @@ class DashboardPage extends StatelessWidget {
                 _buildProgressAndMetrics(isMobile, isTablet, isDesktop, porcentajeExito),
                 SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
 
-                // Quizzes recomendados
+                // Quizzes recomendados - MEJORADO
                 _buildQuizSection(context, isMobile, isTablet, isDesktop),
                 SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
 
@@ -106,19 +106,12 @@ class DashboardPage extends StatelessWidget {
               ),
               SizedBox(width: isMobile ? 12 : 8),
               Expanded(
-                child: ShaderMask(
-                  shaderCallback: (bounds) => const LinearGradient(
-                    colors: [Colors.white, Colors.white70],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ).createShader(bounds),
-                  child: Text(
-                    '¡Bienvenido de vuelta!',
-                    style: TextStyle(
-                      fontSize: titleSize,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                    ),
+                child: Text(
+                  '¡Bienvenido de vuelta!',
+                  style: TextStyle(
+                    fontSize: titleSize,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -165,18 +158,20 @@ class DashboardPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.white.withOpacity(0.3),
                 ),
-                child: AnimatedFractionallySizedBox(
-                  duration: const Duration(milliseconds: 1000),
-                  alignment: Alignment.centerLeft,
-                  widthFactor: progresoNivel,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      gradient: const LinearGradient(
-                        colors: [Colors.white, Colors.white70],
+                child: Stack(
+                  children: [
+                    FractionallySizedBox(
+                      widthFactor: progresoNivel,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: const LinearGradient(
+                            colors: [Colors.white, Colors.white70],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               SizedBox(height: isMobile ? 4 : 2),
@@ -202,19 +197,12 @@ class DashboardPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ).createShader(bounds),
-          child: Text(
-            'Tu Progreso',
-            style: TextStyle(
-              fontSize: isMobile ? 20 : isTablet ? 18 : 22,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
+        Text(
+          'Tu Progreso',
+          style: TextStyle(
+            fontSize: isMobile ? 20 : isTablet ? 18 : 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
           ),
         ),
         SizedBox(height: isMobile ? 16 : 12),
@@ -534,61 +522,111 @@ class DashboardPage extends StatelessWidget {
   }
 
   Widget _buildQuizSection(BuildContext context, bool isMobile, bool isTablet, bool isDesktop) {
+    final List<Map<String, dynamic>> recommendedQuizzes = [
+      {
+        'title': 'Bitcoin Básico',
+        'subtitle': 'Conceptos fundamentales para empezar',
+        'icon': Icons.currency_bitcoin_rounded,
+        'color': Colors.orange,
+        'reward': '10 SATS',
+        'progress': 0.3,
+        'difficulty': 'Fácil',
+      },
+      {
+        'title': 'Lightning Network',
+        'subtitle': 'Pagos instantáneos y de bajo costo',
+        'icon': Icons.bolt_rounded,
+        'color': Colors.blue,
+        'reward': '15 SATS',
+        'progress': 0.0,
+        'difficulty': 'Intermedio',
+      },
+      {
+        'title': 'Seguridad Avanzada',
+        'subtitle': 'Protege tus fondos y privacidad',
+        'icon': Icons.security_rounded,
+        'color': Colors.green,
+        'reward': '20 SATS',
+        'progress': 0.0,
+        'difficulty': 'Avanzado',
+      },
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ).createShader(bounds),
-          child: Text(
-            'Continúa Aprendiendo',
-            style: TextStyle(
-              fontSize: isMobile ? 20 : isTablet ? 18 : 22,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        SizedBox(height: isMobile ? 16 : 12),
-        Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildQuizCard(
-              context,
-              'Bitcoin Básico',
-              'Conceptos fundamentales para empezar',
-              Icons.currency_bitcoin_rounded,
-              Colors.orange,
-              '10 SATS',
-              isMobile,
-              isTablet,
+            Text(
+              'Continúa Aprendiendo',
+              style: TextStyle(
+                fontSize: isMobile ? 20 : isTablet ? 18 : 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
             ),
-            SizedBox(height: isMobile ? 12 : 8),
-            _buildQuizCard(
-              context,
-              'Lightning Network',
-              'Pagos instantáneos y de bajo costo',
-              Icons.bolt_rounded,
-              Colors.blue,
-              '15 SATS',
-              isMobile,
-              isTablet,
-            ),
-            if (!isMobile) SizedBox(height: isMobile ? 12 : 8),
-            if (!isMobile) _buildQuizCard(
-              context,
-              'Seguridad Avanzada',
-              'Protege tus fondos y privacidad',
-              Icons.security_rounded,
-              Colors.green,
-              '20 SATS',
-              isMobile,
-              isTablet,
-            ),
+            if (!isMobile)
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/quiz');
+                },
+                child: Text(
+                  'Ver todos',
+                  style: TextStyle(
+                    color: Colors.blueAccent,
+                    fontSize: isTablet ? 14 : 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
           ],
         ),
+        SizedBox(height: isMobile ? 16 : 12),
+        
+        if (isMobile || isTablet)
+          Column(
+            children: recommendedQuizzes.map((quiz) => 
+              Padding(
+                padding: EdgeInsets.only(bottom: isMobile ? 12 : 8),
+                child: _buildQuizCard(
+                  context,
+                  quiz['title'] as String,
+                  quiz['subtitle'] as String,
+                  quiz['icon'] as IconData,
+                  quiz['color'] as Color,
+                  quiz['reward'] as String,
+                  quiz['progress'] as double,
+                  quiz['difficulty'] as String,
+                  isMobile,
+                  isTablet,
+                ),
+              )
+            ).toList(),
+          )
+        else
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 3,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 1.1,
+            children: recommendedQuizzes.map((quiz) => 
+              _buildQuizCard(
+                context,
+                quiz['title'] as String,
+                quiz['subtitle'] as String,
+                quiz['icon'] as IconData,
+                quiz['color'] as Color,
+                quiz['reward'] as String,
+                quiz['progress'] as double,
+                quiz['difficulty'] as String,
+                isMobile,
+                isTablet,
+              )
+            ).toList(),
+          ),
       ],
     );
   }
@@ -600,6 +638,33 @@ class DashboardPage extends StatelessWidget {
     IconData icon,
     Color color,
     String reward,
+    double progress,
+    String difficulty,
+    bool isMobile,
+    bool isTablet,
+  ) {
+    final bool isDesktop = !isMobile && !isTablet;
+    
+    if (isDesktop) {
+      return _buildDesktopQuizCard(
+        context, title, subtitle, icon, color, reward, progress, difficulty, isMobile, isTablet
+      );
+    } else {
+      return _buildMobileQuizCard(
+        context, title, subtitle, icon, color, reward, progress, difficulty, isMobile, isTablet
+      );
+    }
+  }
+
+  Widget _buildMobileQuizCard(
+    BuildContext context,
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+    String reward,
+    double progress,
+    String difficulty,
     bool isMobile,
     bool isTablet,
   ) {
@@ -637,9 +702,51 @@ class DashboardPage extends StatelessWidget {
             fontSize: titleSize,
           ),
         ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(fontSize: subtitleSize),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              subtitle,
+              style: TextStyle(fontSize: subtitleSize),
+            ),
+            SizedBox(height: 6),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: _getDifficultyColor(difficulty).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    difficulty,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: _getDifficultyColor(difficulty),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8),
+                if (progress > 0)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      '${(progress * 100).toInt()}%',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.green,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
         ),
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -661,6 +768,175 @@ class DashboardPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _buildDesktopQuizCard(
+    BuildContext context,
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+    String reward,
+    double progress,
+    String difficulty,
+    bool isMobile,
+    bool isTablet,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header con icono y recompensa
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [color, color.withOpacity(0.8)]),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(icon, color: Colors.white, size: 28),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    reward,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: color,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Contenido
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                SizedBox(height: 12),
+                
+                // Etiquetas de dificultad y progreso
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: _getDifficultyColor(difficulty).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        difficulty,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: _getDifficultyColor(difficulty),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    if (progress > 0)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          '${(progress * 100).toInt()}% completado',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          
+          // Botón de acción
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/quiz');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color.withOpacity(0.1),
+                  foregroundColor: color,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                child: Text(
+                  progress > 0 ? 'Continuar' : 'Comenzar',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: color,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getDifficultyColor(String difficulty) {
+    switch (difficulty.toLowerCase()) {
+      case 'fácil':
+        return Colors.green;
+      case 'intermedio':
+        return Colors.orange;
+      case 'avanzado':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 
   Widget _buildQuickActions(BuildContext context, bool isMobile, bool isTablet, bool isDesktop) {

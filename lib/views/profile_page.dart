@@ -18,11 +18,16 @@ class _ProfilePageState extends State<ProfilePage> {
   int userLevel = 1;
   int totalSats = 0;
   int quizzesCompletados = 0;
-  double progresoNivel = 0.25;
+  double progresoNivel = 0.0; // Cambiado a 0%
   String memberSince = "Enero 2024";
   bool emailVerified = true;
   bool notificationsEnabled = true;
   bool biometricAuthEnabled = false;
+
+  // Configuración de privacidad
+  bool profilePublic = true;
+  bool emailVisible = false;
+  bool shareStatistics = true;
 
   Uint8List? profileImageWeb;
   File? profileImageMobile;
@@ -68,7 +73,14 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context) {
         String tempValue = currentValue;
         return AlertDialog(
-          title: Text("Editar $title"),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+          title: Text(
+            "Editar $title",
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
           content: TextField(
             autofocus: true,
             controller: controller,
@@ -87,14 +99,23 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () => Navigator.pop(context),
               child: const Text("Cancelar"),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 if (tempValue.trim().isNotEmpty) {
                   onSave(tempValue.trim());
                   Navigator.pop(context);
                 }
               },
-              child: const Text("Guardar"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                "Guardar",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
@@ -125,40 +146,89 @@ class _ProfilePageState extends State<ProfilePage> {
   void _showPrivacySettings() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Privacidad y Seguridad"),
-        content: SingleChildScrollView(
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: Colors.white,
+        child: Container(
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Row(
+                children: [
+                  Icon(Icons.security_rounded, color: Colors.blueAccent),
+                  SizedBox(width: 12),
+                  Text(
+                    "Privacidad y Seguridad",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               _buildPrivacyOption(
                 'Perfil público',
                 'Otros usuarios pueden ver tu progreso',
-                true,
-                (value) {},
+                profilePublic,
+                (value) {
+                  setState(() => profilePublic = value);
+                  _showSuccessSnackbar(
+                    value
+                        ? 'Perfil público activado'
+                        : 'Perfil público desactivado',
+                  );
+                },
               ),
               _buildPrivacyOption(
                 'Email visible',
                 'Mostrar email en tu perfil',
-                false,
-                (value) {},
+                emailVisible,
+                (value) {
+                  setState(() => emailVisible = value);
+                  _showSuccessSnackbar(
+                    value
+                        ? 'Email visible activado'
+                        : 'Email visible desactivado',
+                  );
+                },
               ),
               _buildPrivacyOption(
                 'Estadísticas compartidas',
                 'Compartir datos anónimos para mejorar la app',
-                true,
-                (value) {},
+                shareStatistics,
+                (value) {
+                  setState(() => shareStatistics = value);
+                  _showSuccessSnackbar(
+                    value
+                        ? 'Estadísticas compartidas'
+                        : 'Estadísticas privadas',
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Aplicar Cambios',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cerrar"),
-          ),
-        ],
       ),
     );
   }
@@ -170,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Function(bool) onChanged,
   ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: Row(
         children: [
           Expanded(
@@ -179,8 +249,12 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   subtitle,
                   style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
@@ -433,10 +507,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   _showSuccessSnackbar('Nombre actualizado');
                 }),
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: Colors.blueAccent.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.blueAccent.withOpacity(0.5),
+                    ),
                   ),
                   child: Icon(
                     Icons.edit_rounded,
@@ -499,14 +576,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   setState(() => userEmail = newEmail);
                   _showSuccessSnackbar('Email actualizado');
                 }),
-                child: Icon(
-                  Icons.edit_rounded,
-                  size: isMobile
-                      ? 16
-                      : isTablet
-                      ? 14
-                      : 18,
-                  color: Colors.grey.shade600,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Icon(
+                    Icons.edit_rounded,
+                    size: isMobile
+                        ? 16
+                        : isTablet
+                        ? 14
+                        : 18,
+                    color: Colors.blueAccent,
+                  ),
                 ),
               ),
             ],
@@ -611,18 +695,20 @@ class _ProfilePageState extends State<ProfilePage> {
               borderRadius: BorderRadius.circular(6),
               color: Colors.grey.shade200,
             ),
-            child: AnimatedFractionallySizedBox(
-              duration: const Duration(milliseconds: 1000),
-              alignment: Alignment.centerLeft,
-              widthFactor: progresoNivel,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  gradient: const LinearGradient(
-                    colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            child: Stack(
+              children: [
+                FractionallySizedBox(
+                  widthFactor: progresoNivel,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      gradient: const LinearGradient(
+                        colors: [Colors.blueAccent, Colors.lightBlueAccent],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
 
@@ -813,6 +899,7 @@ class _ProfilePageState extends State<ProfilePage> {
     required bool isMobile,
     required bool isTablet,
   }) {
+    // Esta llave debe estar aquí
     final double iconSize = isMobile ? 20 : (isTablet ? 18 : 22);
     final double titleSize = isMobile ? 16 : (isTablet ? 14 : 18);
     final double subtitleSize = isMobile ? 12 : (isTablet ? 11 : 14);
@@ -958,6 +1045,16 @@ class _ProfilePageState extends State<ProfilePage> {
             'SPK-${userEmail.hashCode.abs()}',
             textSize,
           ),
+          _buildInfoRow(
+            'Perfil público',
+            profilePublic ? 'Activado' : 'Desactivado',
+            textSize,
+          ),
+          _buildInfoRow(
+            'Estadísticas compartidas',
+            shareStatistics ? 'Activado' : 'Desactivado',
+            textSize,
+          ),
 
           SizedBox(height: isMobile ? 12 : 8),
 
@@ -1030,12 +1127,11 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(width: spacing),
           Expanded(
             child: CustomButton(
-              text: 'Ayuda y Soporte',
-              onPressed: () {
-                _showComingSoonSnackbar(context, 'Ayuda y soporte');
-              },
+              text: 'Cerrar Sesión',
+              onPressed: () => _showLogoutDialog(context),
               isPrimary: false,
               height: buttonHeight,
+              backgroundColor: Colors.red,
             ),
           ),
         ],
@@ -1053,28 +1149,11 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: spacing),
           CustomButton(
-            text: 'Ayuda y Soporte',
-            onPressed: () {
-              _showComingSoonSnackbar(context, 'Ayuda y soporte');
-            },
+            text: 'Cerrar Sesión',
+            onPressed: () => _showLogoutDialog(context),
             isPrimary: false,
             height: buttonHeight,
-          ),
-          SizedBox(height: spacing),
-          TextButton(
-            onPressed: () => _showLogoutDialog(context),
-            child: Text(
-              'Cerrar Sesión',
-              style: TextStyle(
-                color: Colors.red.shade600,
-                fontSize: isMobile
-                    ? 16
-                    : isTablet
-                    ? 14
-                    : 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            backgroundColor: Colors.red,
           ),
         ],
       );

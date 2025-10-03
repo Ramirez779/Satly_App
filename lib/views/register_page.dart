@@ -101,7 +101,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.white, Colors.blue.shade50],
+                  colors: [
+                    Colors.white,
+                    Colors.blue.shade50,
+                    Colors.blue.shade100,
+                  ],
+                  stops: const [0.0, 0.6, 1.0],
                 ),
               ),
               child: SingleChildScrollView(
@@ -117,11 +122,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(height: isPortrait ? 20 : 10),
+                      SizedBox(height: isPortrait ? 40 : 20),
                       _buildHeader(isPortrait),
                       _buildForm(isPortrait),
                       _buildActions(isPortrait),
-                      SizedBox(height: isPortrait ? 20 : 10),
+                      SizedBox(height: isPortrait ? 40 : 20),
                     ],
                   ),
                 ),
@@ -136,56 +141,87 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildHeader(bool isPortrait) {
     return Column(
       children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
-          width: isPortrait ? 100 : 80,
-          height: isPortrait ? 100 : 80,
+        // Logo mejorado
+        Container(
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Colors.blueAccent, Colors.lightBlueAccent],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(25),
+            shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
                 color: Colors.blueAccent.withOpacity(0.3),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
+                blurRadius: 25,
+                spreadRadius: 3,
+                offset: const Offset(0, 12),
               ),
             ],
           ),
-          child: const Icon(
-            Icons.person_add_alt_1_rounded,
-            size: 50,
-            color: Colors.white,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 600),
+            width: isPortrait ? 110 : 90,
+            height: isPortrait ? 110 : 90,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF0066FF),
+                  Color(0xFF00BFFF),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.person_add_alt_1_rounded,
+              size: 50,
+              color: Colors.white,
+            ),
           ),
         ),
-        SizedBox(height: isPortrait ? 20 : 12),
+        
+        SizedBox(height: isPortrait ? 24 : 16),
+        
+        // Título con mejor jerarquía
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            colors: [
+              Color(0xFF0066FF),
+              Color(0xFF00BFFF),
+            ],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ).createShader(bounds),
           child: Text(
             'Crear Cuenta',
             style: TextStyle(
-              fontSize: isPortrait ? 36 : 28,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
+              fontSize: isPortrait ? 38 : 30,
+              fontWeight: FontWeight.w900,
+              letterSpacing: -0.8,
               color: Colors.white,
             ),
           ),
         ),
+        
         SizedBox(height: 8),
+        
         Text(
-          'Únete a la comunidad Bitcoin',
+          'Únete a la comunidad',
           style: TextStyle(
             fontSize: isPortrait ? 16 : 14,
-            color: Colors.black87,
+            color: Colors.grey.shade700,
+            fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
+        ),
+        
+        SizedBox(height: 4),
+        
+        Text(
+          'SparkSeed',
+          style: TextStyle(
+            fontSize: isPortrait ? 18 : 16,
+            color: Colors.blue.shade700,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.2,
+          ),
         ),
       ],
     );
@@ -196,6 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
       key: _formKey,
       child: Column(
         children: [
+          SizedBox(height: isPortrait ? 40 : 30),
           _buildTextField(
             controller: _nameCtl,
             label: 'Nombre completo',
@@ -210,7 +247,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: isPortrait ? 16 : 12),
+          SizedBox(height: isPortrait ? 20 : 16),
           _buildTextField(
             controller: _emailCtl,
             label: 'Correo electrónico',
@@ -225,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: isPortrait ? 16 : 12),
+          SizedBox(height: isPortrait ? 20 : 16),
           _buildPasswordField(
             controller: _passCtl,
             label: 'Contraseña',
@@ -238,7 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: isPortrait ? 16 : 12),
+          SizedBox(height: isPortrait ? 20 : 16),
           _buildPasswordField(
             controller: _confirmPassCtl,
             label: 'Confirmar contraseña',
@@ -255,17 +292,38 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buildActions(bool isPortrait) {
     return Column(
       children: [
-        CustomButton(
-          text: 'Crear Cuenta',
-          onPressed: _isLoading ? null : _submitRegister,
-          isLoading: _isLoading,
-          isPrimary: true,
-          height: isPortrait ? 56 : 52,
+        // Botón de registro con sombra
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blueAccent.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: CustomButton(
+            text: 'Crear Cuenta',
+            onPressed: _isLoading ? null : _submitRegister,
+            isLoading: _isLoading,
+            isPrimary: true,
+            height: isPortrait ? 58 : 54,
+          ),
         ),
-        SizedBox(height: isPortrait ? 20 : 16),
+        
+        SizedBox(height: isPortrait ? 24 : 20),
+        
+        // Separador mejorado
         Row(
           children: [
-            Expanded(child: Divider(color: Colors.grey.shade300)),
+            Expanded(
+              child: Divider(
+                color: Colors.grey.shade400,
+                thickness: 1,
+              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: isPortrait ? 16 : 12),
               child: Text(
@@ -273,22 +331,43 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   fontSize: isPortrait ? 14 : 12,
                   color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            Expanded(child: Divider(color: Colors.grey.shade300)),
+            Expanded(
+              child: Divider(
+                color: Colors.grey.shade400,
+                thickness: 1,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: isPortrait ? 20 : 16),
-        CustomButton(
-          text: 'Iniciar Sesión',
-          onPressed: _isLoading
-              ? null
-              : () {
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-          isPrimary: false,
-          height: isPortrait ? 56 : 52,
+        
+        SizedBox(height: isPortrait ? 24 : 20),
+        
+        // Botón de login con borde
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: Colors.blueAccent,
+              width: 2,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: CustomButton(
+              text: 'Iniciar Sesión',
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    },
+              isPrimary: false,
+              height: isPortrait ? 58 : 54,
+            ),
+          ),
         ),
       ],
     );
@@ -305,15 +384,32 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
-      style: TextStyle(fontSize: isPortrait ? 16 : 14),
+      style: TextStyle(
+        fontSize: isPortrait ? 16 : 14,
+        color: Colors.grey.shade800,
+      ),
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: TextStyle(color: Colors.grey.shade600),
         prefixIcon: Icon(icon, color: Colors.blueAccent),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
         ),
         filled: true,
         fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: isPortrait ? 18 : 16,
+        ),
       ),
       validator: validator,
     );
@@ -330,9 +426,13 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      style: TextStyle(fontSize: isPortrait ? 16 : 14),
+      style: TextStyle(
+        fontSize: isPortrait ? 16 : 14,
+        color: Colors.grey.shade800,
+      ),
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: TextStyle(color: Colors.grey.shade600),
         prefixIcon: const Icon(Icons.lock_rounded, color: Colors.blueAccent),
         suffixIcon: IconButton(
           icon: Icon(
@@ -342,10 +442,23 @@ class _RegisterPageState extends State<RegisterPage> {
           onPressed: onToggle,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
         ),
         filled: true,
         fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: isPortrait ? 18 : 16,
+        ),
       ),
       validator: validator,
     );
