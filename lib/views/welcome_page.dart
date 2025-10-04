@@ -108,7 +108,7 @@ class WelcomePage extends StatelessWidget {
                                   end: Alignment.centerRight,
                                 ).createShader(bounds),
                                 child: Text(
-                                  "SparkSeed",
+                                  "EduSats",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: titleFont,
