@@ -13,16 +13,27 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String userName = "Usuario SparkSeed";
-  String userEmail = "usuario@sparkseed.com";
+  String userName = "Usuario";
+  String userEmail = "usuario@edusats.com";
   int userLevel = 1;
   int totalSats = 0;
-  int quizzesCompletados = 0;
-  double progresoNivel = 0.0; // Cambiado a 0%
-  String memberSince = "Enero 2024";
+  int quizzesCompletados = 8;
+  double progresoNivel = 0.0;
+  String memberSince = "Octubre 2025";
   bool emailVerified = true;
   bool notificationsEnabled = true;
   bool biometricAuthEnabled = false;
+
+  // Estadísticas detalladas (solo para perfil)
+  int totalPreguntasRespondidas = 0;
+  int totalPreguntasCorrectas = 0;
+  int tiempoTotalMinutos = 0;
+  Map<String, double> progresoCategorias = {
+    'Bitcoin': 0.0,
+    'Lightning': 0.0,
+    'Seguridad': 0.0,
+    'Trading': 0.0,
+  };
 
   // Configuración de privacidad
   bool profilePublic = true;
@@ -274,6 +285,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double porcentajeExito = totalPreguntasRespondidas > 0
+        ? (totalPreguntasCorrectas / totalPreguntasRespondidas * 100)
+        : 0.0;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: LayoutBuilder(
@@ -310,60 +325,27 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     _buildProfileHeader(isMobile, isTablet, isDesktop),
-                    SizedBox(
-                      height: isMobile
-                          ? 24
-                          : isTablet
-                          ? 20
-                          : 24,
-                    ),
-                    _buildQuickStats(
-                      isMobile,
-                      isTablet,
-                      isDesktop,
-                      constraints.maxWidth,
-                    ),
-                    SizedBox(
-                      height: isMobile
-                          ? 24
-                          : isTablet
-                          ? 20
-                          : 24,
-                    ),
-                    _buildSettingsSection(
-                      context,
-                      isMobile,
-                      isTablet,
-                      isDesktop,
-                    ),
-                    SizedBox(
-                      height: isMobile
-                          ? 24
-                          : isTablet
-                          ? 20
-                          : 24,
-                    ),
+                    SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
+                    
+                    // Estadísticas detalladas (solo en perfil)
+                    _buildDetailedStats(isMobile, isTablet, isDesktop, porcentajeExito),
+                    SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
+                    
+                    // Progreso por categorías
+                    _buildCategoryProgress(isMobile, isTablet, isDesktop),
+                    SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
+
+                    // Configuración
+                    _buildSettingsSection(context, isMobile, isTablet, isDesktop),
+                    SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
+
+                    // Información de la cuenta
                     _buildAccountInfo(isMobile, isTablet, isDesktop),
-                    SizedBox(
-                      height: isMobile
-                          ? 24
-                          : isTablet
-                          ? 20
-                          : 24,
-                    ),
-                    _buildImportantActions(
-                      context,
-                      isMobile,
-                      isTablet,
-                      isDesktop,
-                    ),
-                    SizedBox(
-                      height: isMobile
-                          ? 32
-                          : isTablet
-                          ? 24
-                          : 32,
-                    ),
+                    SizedBox(height: isMobile ? 24 : isTablet ? 20 : 24),
+
+                    // Cerrar sesión (añadido aquí)
+                    _buildLogoutSection(context, isMobile, isTablet, isDesktop),
+                    SizedBox(height: isMobile ? 32 : isTablet ? 24 : 32),
                   ],
                 ),
               ),
@@ -375,26 +357,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildProfileHeader(bool isMobile, bool isTablet, bool isDesktop) {
-    final double padding = isMobile
-        ? 24
-        : isTablet
-        ? 20
-        : 24;
-    final double avatarSize = isMobile
-        ? 100
-        : isTablet
-        ? 90
-        : 120;
-    final double titleSize = isMobile
-        ? 24
-        : isTablet
-        ? 20
-        : 28;
-    final double subtitleSize = isMobile
-        ? 16
-        : isTablet
-        ? 14
-        : 18;
+    final double padding = isMobile ? 24 : isTablet ? 20 : 24;
+    final double avatarSize = isMobile ? 100 : isTablet ? 90 : 120;
+    final double titleSize = isMobile ? 24 : isTablet ? 20 : 28;
+    final double subtitleSize = isMobile ? 16 : isTablet ? 14 : 18;
 
     return Container(
       padding: EdgeInsets.all(padding),
@@ -466,11 +432,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: Icon(
                       Icons.camera_alt_rounded,
-                      size: isMobile
-                          ? 18
-                          : isTablet
-                          ? 16
-                          : 20,
+                      size: isMobile ? 18 : isTablet ? 16 : 20,
                       color: Colors.white,
                     ),
                   ),
@@ -517,11 +479,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   child: Icon(
                     Icons.edit_rounded,
-                    size: isMobile
-                        ? 16
-                        : isTablet
-                        ? 14
-                        : 18,
+                    size: isMobile ? 16 : isTablet ? 14 : 18,
                     color: Colors.blueAccent,
                   ),
                 ),
@@ -546,11 +504,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Text(
               'Nivel $userLevel • ${(progresoNivel * 100).toStringAsFixed(0)}%',
               style: TextStyle(
-                fontSize: isMobile
-                    ? 14
-                    : isTablet
-                    ? 12
-                    : 16,
+                fontSize: isMobile ? 14 : isTablet ? 12 : 16,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
@@ -584,11 +538,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   child: Icon(
                     Icons.edit_rounded,
-                    size: isMobile
-                        ? 16
-                        : isTablet
-                        ? 14
-                        : 18,
+                    size: isMobile ? 16 : isTablet ? 14 : 18,
                     color: Colors.blueAccent,
                   ),
                 ),
@@ -600,24 +550,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildQuickStats(
-    bool isMobile,
-    bool isTablet,
-    bool isDesktop,
-    double maxWidth,
-  ) {
-    final int crossAxisCount = isMobile ? 3 : (isTablet ? 4 : 3);
-    final double childAspectRatio = isMobile ? 0.8 : (isTablet ? 0.9 : 1.0);
-    final double spacing = isMobile ? 16 : (isTablet ? 12 : 20);
-
+  Widget _buildDetailedStats(bool isMobile, bool isTablet, bool isDesktop, double porcentajeExito) {
     return Container(
-      padding: EdgeInsets.all(
-        isMobile
-            ? 20
-            : isTablet
-            ? 16
-            : 20,
-      ),
+      padding: EdgeInsets.all(isMobile ? 20 : isTablet ? 16 : 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -630,123 +565,37 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [Colors.blueAccent, Colors.lightBlueAccent],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ).createShader(bounds),
-            child: Text(
-              'Tu Progreso',
-              style: TextStyle(
-                fontSize: isMobile
-                    ? 20
-                    : isTablet
-                    ? 18
-                    : 22,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
-            ),
-          ),
-
-          SizedBox(height: isMobile ? 16 : 12),
-
-          // Barra de progreso mejorada
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Icon(Icons.analytics_rounded, color: Colors.blueAccent, size: 24),
+              SizedBox(width: isMobile ? 12 : 8),
               Text(
-                'Nivel $userLevel',
+                'Estadísticas Detalladas',
                 style: TextStyle(
-                  fontSize: isMobile
-                      ? 14
-                      : isTablet
-                      ? 12
-                      : 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                '${(progresoNivel * 100).toStringAsFixed(0)}%',
-                style: TextStyle(
-                  fontSize: isMobile
-                      ? 14
-                      : isTablet
-                      ? 12
-                      : 16,
-                  color: Colors.blueAccent,
+                  fontSize: isMobile ? 20 : isTablet ? 18 : 22,
                   fontWeight: FontWeight.w700,
+                  color: Colors.grey.shade800,
                 ),
               ),
             ],
           ),
-
-          SizedBox(height: isMobile ? 8 : 6),
-
-          Container(
-            height: isMobile
-                ? 12
-                : isTablet
-                ? 10
-                : 14,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: Colors.grey.shade200,
-            ),
-            child: Stack(
-              children: [
-                FractionallySizedBox(
-                  widthFactor: progresoNivel,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      gradient: const LinearGradient(
-                        colors: [Colors.blueAccent, Colors.lightBlueAccent],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: isMobile ? 20 : 16),
-
-          // Stats en grid responsive
+          SizedBox(height: isMobile ? 16 : 12),
+          
+          // Grid de estadísticas detalladas
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: spacing,
-            mainAxisSpacing: spacing,
-            childAspectRatio: childAspectRatio,
+            crossAxisCount: isMobile ? 2 : (isTablet ? 3 : 4),
+            crossAxisSpacing: isMobile ? 12 : 16,
+            mainAxisSpacing: isMobile ? 12 : 16,
+            childAspectRatio: 1.2,
             children: [
-              _buildStatItem(
-                'SATS',
-                totalSats.toString(),
-                Icons.bolt_rounded,
-                Colors.amber.shade600,
-                isMobile,
-                isTablet,
-              ),
-              _buildStatItem(
-                'Quizzes',
-                quizzesCompletados.toString(),
-                Icons.quiz_rounded,
-                Colors.green.shade600,
-                isMobile,
-                isTablet,
-              ),
-              _buildStatItem(
-                'Nivel',
-                userLevel.toString(),
-                Icons.star_rounded,
-                Colors.purple.shade600,
-                isMobile,
-                isTablet,
-              ),
+              _buildStatCard('Preguntas Totales', totalPreguntasRespondidas.toString(), Icons.question_answer_rounded, Colors.blue),
+              _buildStatCard('Correctas', totalPreguntasCorrectas.toString(), Icons.check_circle_rounded, Colors.green),
+              _buildStatCard('Tasa de Éxito', '${porcentajeExito.toStringAsFixed(1)}%', Icons.flag_rounded, Colors.purple),
+              _buildStatCard('Tiempo Total', '${(tiempoTotalMinutos / 60).toStringAsFixed(0)}h', Icons.timer_rounded, Colors.orange),
             ],
           ),
         ],
@@ -754,21 +603,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildStatItem(
-    String label,
-    String value,
-    IconData icon,
-    Color color,
-    bool isMobile,
-    bool isTablet,
-  ) {
-    final double padding = isMobile ? 12 : (isTablet ? 8 : 16);
-    final double iconSize = isMobile ? 20 : (isTablet ? 16 : 24);
-    final double valueSize = isMobile ? 18 : (isTablet ? 16 : 22);
-    final double labelSize = isMobile ? 12 : (isTablet ? 10 : 14);
-
+  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: EdgeInsets.all(padding),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
@@ -777,38 +614,126 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: EdgeInsets.all(isMobile ? 8 : 6),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: color, size: iconSize),
-          ),
-          SizedBox(height: isMobile ? 8 : 6),
+          Icon(icon, color: color, size: 28),
+          SizedBox(height: 8),
           Text(
             value,
             style: TextStyle(
-              fontSize: valueSize,
+              fontSize: 18,
               fontWeight: FontWeight.w800,
               color: color,
             ),
           ),
+          SizedBox(height: 4),
           Text(
-            label,
-            style: TextStyle(fontSize: labelSize, color: Colors.grey.shade600),
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSettingsSection(
-    BuildContext context,
-    bool isMobile,
-    bool isTablet,
-    bool isDesktop,
-  ) {
+  Widget _buildCategoryProgress(bool isMobile, bool isTablet, bool isDesktop) {
+    return Container(
+      padding: EdgeInsets.all(isMobile ? 20 : isTablet ? 16 : 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.category_rounded, color: Colors.blueAccent, size: 24),
+              SizedBox(width: isMobile ? 12 : 8),
+              Text(
+                'Progreso por Categoría',
+                style: TextStyle(
+                  fontSize: isMobile ? 20 : isTablet ? 18 : 22,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.grey.shade800,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: isMobile ? 16 : 12),
+          
+          // Barras de progreso por categoría
+          Column(
+            children: progresoCategorias.entries.map((entry) {
+              return _buildCategoryProgressItem(entry.key, entry.value, isMobile);
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryProgressItem(String category, double progress, bool isMobile) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                category,
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                '${(progress * 100).toStringAsFixed(0)}%',
+                style: TextStyle(
+                  fontSize: isMobile ? 14 : 16,
+                  color: Colors.blueAccent,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 6),
+          Container(
+            height: 8,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: Colors.grey.shade200,
+            ),
+            child: FractionallySizedBox(
+              widthFactor: progress,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  gradient: const LinearGradient(
+                    colors: [Colors.blueAccent, Colors.lightBlueAccent],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingsSection(BuildContext context, bool isMobile, bool isTablet, bool isDesktop) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -825,30 +750,13 @@ class _ProfilePageState extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(
-              isMobile
-                  ? 20
-                  : isTablet
-                  ? 16
-                  : 20,
-            ),
-            child: ShaderMask(
-              shaderCallback: (bounds) => const LinearGradient(
-                colors: [Colors.blueAccent, Colors.lightBlueAccent],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ).createShader(bounds),
-              child: Text(
-                'Configuración',
-                style: TextStyle(
-                  fontSize: isMobile
-                      ? 20
-                      : isTablet
-                      ? 18
-                      : 22,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+            padding: EdgeInsets.all(isMobile ? 20 : isTablet ? 16 : 20),
+            child: Text(
+              'Configuración',
+              style: TextStyle(
+                fontSize: isMobile ? 20 : isTablet ? 18 : 22,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey.shade800,
               ),
             ),
           ),
@@ -899,7 +807,6 @@ class _ProfilePageState extends State<ProfilePage> {
     required bool isMobile,
     required bool isTablet,
   }) {
-    // Esta llave debe estar aquí
     final double iconSize = isMobile ? 20 : (isTablet ? 18 : 22);
     final double titleSize = isMobile ? 16 : (isTablet ? 14 : 18);
     final double subtitleSize = isMobile ? 12 : (isTablet ? 11 : 14);
@@ -931,11 +838,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         child: Icon(
           Icons.arrow_forward_ios_rounded,
-          size: isMobile
-              ? 14
-              : isTablet
-              ? 12
-              : 16,
+          size: isMobile ? 14 : isTablet ? 12 : 16,
           color: Colors.grey.shade600,
         ),
       ),
@@ -984,21 +887,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildAccountInfo(bool isMobile, bool isTablet, bool isDesktop) {
-    final double padding = isMobile
-        ? 20
-        : isTablet
-        ? 16
-        : 20;
-    final double titleSize = isMobile
-        ? 18
-        : isTablet
-        ? 16
-        : 20;
-    final double textSize = isMobile
-        ? 14
-        : isTablet
-        ? 12
-        : 16;
+    final double padding = isMobile ? 20 : isTablet ? 16 : 20;
+    final double titleSize = isMobile ? 18 : isTablet ? 16 : 20;
+    final double textSize = isMobile ? 14 : isTablet ? 12 : 16;
 
     return Container(
       padding: EdgeInsets.all(padding),
@@ -1016,24 +907,15 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [Colors.blueAccent, Colors.lightBlueAccent],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ).createShader(bounds),
-            child: Text(
-              'Información de la Cuenta',
-              style: TextStyle(
-                fontSize: titleSize,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
+          Text(
+            'Información de la Cuenta',
+            style: TextStyle(
+              fontSize: titleSize,
+              fontWeight: FontWeight.w700,
+              color: Colors.grey.shade800,
             ),
           ),
-
           SizedBox(height: isMobile ? 16 : 12),
-
           _buildInfoRow('Miembro desde', memberSince, textSize),
           _buildInfoRow(
             'Email verificado',
@@ -1054,21 +936,6 @@ class _ProfilePageState extends State<ProfilePage> {
             'Estadísticas compartidas',
             shareStatistics ? 'Activado' : 'Desactivado',
             textSize,
-          ),
-
-          SizedBox(height: isMobile ? 12 : 8),
-
-          Text(
-            '* Los datos de progreso se actualizan automáticamente',
-            style: TextStyle(
-              fontSize: isMobile
-                  ? 10
-                  : isTablet
-                  ? 9
-                  : 12,
-              color: Colors.grey.shade500,
-              fontStyle: FontStyle.italic,
-            ),
           ),
         ],
       ),
@@ -1102,52 +969,42 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildImportantActions(
-    BuildContext context,
-    bool isMobile,
-    bool isTablet,
-    bool isDesktop,
-  ) {
+  Widget _buildLogoutSection(BuildContext context, bool isMobile, bool isTablet, bool isDesktop) {
     final double buttonHeight = isMobile ? 56 : (isTablet ? 52 : 60);
-    final double spacing = isMobile ? 12 : (isTablet ? 10 : 16);
 
-    if (isDesktop) {
-      return Row(
-        children: [
-          Expanded(
-            child: CustomButton(
-              text: 'Compartir Mi Progreso',
-              onPressed: () {
-                _showComingSoonSnackbar(context, 'Compartir progreso');
-              },
-              isPrimary: true,
-              height: buttonHeight,
-            ),
-          ),
-          SizedBox(width: spacing),
-          Expanded(
-            child: CustomButton(
-              text: 'Cerrar Sesión',
-              onPressed: () => _showLogoutDialog(context),
-              isPrimary: false,
-              height: buttonHeight,
-              backgroundColor: Colors.red,
-            ),
+    return Container(
+      padding: EdgeInsets.all(isMobile ? 20 : isTablet ? 16 : 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 5),
           ),
         ],
-      );
-    } else {
-      return Column(
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomButton(
-            text: 'Compartir Mi Progreso',
-            onPressed: () {
-              _showComingSoonSnackbar(context, 'Compartir progreso');
-            },
-            isPrimary: true,
-            height: buttonHeight,
+          Text(
+            'Cerrar Sesión',
+            style: TextStyle(
+              fontSize: isMobile ? 18 : isTablet ? 16 : 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.grey.shade800,
+            ),
           ),
-          SizedBox(height: spacing),
+          SizedBox(height: isMobile ? 12 : 8),
+          Text(
+            'Cierra tu sesión de forma segura. Podrás volver a iniciar sesión cuando quieras.',
+            style: TextStyle(
+              fontSize: isMobile ? 14 : isTablet ? 12 : 16,
+              color: Colors.grey.shade600,
+            ),
+          ),
+          SizedBox(height: isMobile ? 16 : 12),
           CustomButton(
             text: 'Cerrar Sesión',
             onPressed: () => _showLogoutDialog(context),
@@ -1156,8 +1013,8 @@ class _ProfilePageState extends State<ProfilePage> {
             backgroundColor: Colors.red,
           ),
         ],
-      );
-    }
+      ),
+    );
   }
 
   void _showLogoutDialog(BuildContext context) {
@@ -1174,7 +1031,14 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.logout_rounded, size: 48, color: Colors.red.shade600),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.logout_rounded, size: 40, color: Colors.red.shade600),
+              ),
               const SizedBox(height: 16),
               Text(
                 'Cerrar sesión',
@@ -1188,32 +1052,34 @@ class _ProfilePageState extends State<ProfilePage> {
               const Text(
                 '¿Estás seguro de que quieres cerrar sesión?',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(fontSize: 14, color: Color(0xFF757575)),
               ),
               const SizedBox(height: 24),
               Row(
                 children: [
                   Expanded(
-                    child: CustomButton(
-                      text: 'Cancelar',
+                    child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      isPrimary: false,
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      child: const Text('Cancelar', style: TextStyle(color: Color(0xFF616161))),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: CustomButton(
-                      text: 'Cerrar Sesión',
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/',
-                          (route) => false,
-                        );
+                        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                       },
-                      isPrimary: true,
-                      backgroundColor: Colors.red,
+                      child: const Text('Cerrar Sesión', style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ],
@@ -1221,17 +1087,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showComingSoonSnackbar(BuildContext context, String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$feature (próximamente)'),
-        backgroundColor: Colors.blueAccent,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

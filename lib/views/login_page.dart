@@ -16,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   bool _obscurePassword = true;
 
-  // Servicio de autenticación integrado
   bool _isValidEmail(String email) {
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -38,16 +37,10 @@ class _LoginPageState extends State<LoginPage> {
     String password,
   ) async {
     await Future.delayed(const Duration(seconds: 2));
-
-    if (!_isValidEmail(email)) {
-      throw Exception('Formato de email inválido');
-    }
-
+    if (!_isValidEmail(email)) throw Exception('Formato de email inválido');
     if (password.length < 6) {
       throw Exception('La contraseña debe tener al menos 6 caracteres');
     }
-
-    // Simulación de credenciales válidas
     if (email == 'test@example.com' && password == 'password123') {
       return {'success': true, 'message': 'Login exitoso'};
     } else {
@@ -57,24 +50,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<Map<String, dynamic>> _loginWithLNURL(String lnurl) async {
     await Future.delayed(const Duration(seconds: 3));
-
     if (!_isValidLNURL(lnurl)) {
-      throw Exception(
-        'Formato LNURL inválido. Use lnurl1..., https://... o código LNURL',
-      );
+      throw Exception('Formato LNURL inválido.');
     }
-
-    if (lnurl.length < 10) {
-      throw Exception('LNURL demasiado corto');
-    }
-
+    if (lnurl.length < 10) throw Exception('LNURL demasiado corto');
     return {'success': true, 'message': 'Autenticación LNURL exitosa'};
   }
 
   void _submitLogin() async {
     if (!_formKey.currentState!.validate()) return;
     if (_isLoading) return;
-
     setState(() => _isLoading = true);
 
     try {
@@ -82,9 +67,7 @@ class _LoginPageState extends State<LoginPage> {
         _emailCtl.text.trim(),
         _passCtl.text.trim(),
       );
-
       if (!mounted) return;
-
       if (result['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -118,7 +101,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _showLNURLDialog() {
     final lnurlController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -130,7 +112,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Header del diálogo
               Container(
                 width: 60,
                 height: 60,
@@ -230,16 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(14),
                         gradient: const LinearGradient(
                           colors: [Color(0xFFFFA726), Color(0xFFFF9800)],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.orange.withOpacity(0.3),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
                       ),
                       child: ElevatedButton(
                         onPressed: () async {
@@ -290,14 +262,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void _processLNURLLogin(String lnurl) async {
     if (_isLoading) return;
-
     setState(() => _isLoading = true);
-
     try {
       final result = await _loginWithLNURL(lnurl);
-
       if (!mounted) return;
-
       if (result['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -317,10 +285,6 @@ class _LoginPageState extends State<LoginPage> {
         SnackBar(
           content: Text('Error LNURL: $error'),
           backgroundColor: Colors.red.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
         ),
       );
     } finally {
@@ -348,7 +312,6 @@ class _LoginPageState extends State<LoginPage> {
         child: OrientationBuilder(
           builder: (context, orientation) {
             final isPortrait = orientation == Orientation.portrait;
-
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isPortrait ? 24 : 40,
@@ -356,8 +319,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight:
-                      MediaQuery.of(context).size.height -
+                  minHeight: MediaQuery.of(context).size.height -
                       MediaQuery.of(context).padding.vertical,
                 ),
                 child: Column(
@@ -381,7 +343,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildHeader(bool isPortrait) {
     return Column(
       children: [
-        // Logo animado mejorado
         AnimatedContainer(
           duration: const Duration(milliseconds: 800),
           width: isPortrait ? 120 : 100,
@@ -389,8 +350,6 @@ class _LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               colors: [Color(0xFF0066FF), Color(0xFF00BFFF)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
             ),
             shape: BoxShape.circle,
             boxShadow: [
@@ -402,40 +361,18 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
           ),
-          child: Stack(
-            children: [
-              Center(
-                child: Icon(
-                  Icons.bolt_rounded,
-                  size: isPortrait ? 55 : 45,
-                  color: Colors.white,
-                ),
-              ),
-              // Efecto de brillo
-              Positioned(
-                top: 15,
-                left: 15,
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
+          child: Center(
+            child: Icon(
+              Icons.bolt_rounded,
+              size: isPortrait ? 55 : 45,
+              color: Colors.white,
+            ),
           ),
         ),
         SizedBox(height: isPortrait ? 28 : 20),
-
-        // Título con gradiente mejorado
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(
             colors: [Color(0xFF0066FF), Color(0xFF00BFFF)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            stops: [0.3, 0.7],
           ).createShader(bounds),
           child: Text(
             'Bienvenido',
@@ -447,39 +384,13 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        SizedBox(height: 8),
-
-        // Subtítulos mejorados
+        const SizedBox(height: 8),
         Text(
           'Inicia sesión en tu cuenta',
           style: TextStyle(
             fontSize: isPortrait ? 17 : 15,
             color: Colors.grey.shade700,
             fontWeight: FontWeight.w500,
-            letterSpacing: -0.2,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 6),
-
-        // Brand name con mejor estilo
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade50, Colors.blue.shade100],
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.blue.shade200, width: 1),
-          ),
-          child: Text(
-            'SparkSeed',
-            style: TextStyle(
-              fontSize: isPortrait ? 16 : 14,
-              color: Colors.blue.shade800,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.5,
-            ),
           ),
         ),
       ],
@@ -518,7 +429,7 @@ class _LoginPageState extends State<LoginPage> {
               return null;
             },
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
         ],
       ),
     );
@@ -527,92 +438,40 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildActions(bool isPortrait) {
     return Column(
       children: [
-        // Botón principal mejorado
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blueAccent.withOpacity(0.4),
-                blurRadius: 25,
-                spreadRadius: 2,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: CustomButton(
-            text: 'Iniciar Sesión',
-            onPressed: _isLoading ? null : _submitLogin,
-            isLoading: _isLoading,
-            isPrimary: true,
-            height: isPortrait ? 60 : 56,
-          ),
+        CustomButton(
+          text: 'Iniciar Sesión',
+          onPressed: _isLoading ? null : _submitLogin,
+          isLoading: _isLoading,
+          isPrimary: true,
+          height: isPortrait ? 60 : 56,
         ),
-        SizedBox(height: 24),
-
-        // Separador mejorado
+        const SizedBox(height: 24),
         Row(
           children: [
-            Expanded(
-              child: Divider(
-                color: Colors.grey.shade300,
-                thickness: 1,
-                height: 1,
-              ),
-            ),
+            Expanded(child: Divider(color: Colors.grey.shade300)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 'O continúa con',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
               ),
             ),
-            Expanded(
-              child: Divider(
-                color: Colors.grey.shade300,
-                thickness: 1,
-                height: 1,
-              ),
-            ),
+            Expanded(child: Divider(color: Colors.grey.shade300)),
           ],
         ),
-        SizedBox(height: 24),
-
-        // Botón LNURL mejorado
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.orange.shade300, width: 2),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.orange.withOpacity(0.2),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: CustomButton(
-              text: 'Iniciar con LNURL',
-              onPressed: _isLoading ? null : _showLNURLDialog,
-              isPrimary: false,
-              height: isPortrait ? 56 : 52,
-            ),
-          ),
+        const SizedBox(height: 24),
+        CustomButton(
+          text: 'Iniciar con LNURL',
+          onPressed: _isLoading ? null : _showLNURLDialog,
+          isPrimary: false,
+          height: isPortrait ? 56 : 52,
         ),
-        SizedBox(height: 32),
-
-        // Footer mejorado
+        const SizedBox(height: 32),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
           decoration: BoxDecoration(
-            color: Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(color: Colors.grey.shade200),
           ),
           child: Row(
@@ -626,29 +485,19 @@ class _LoginPageState extends State<LoginPage> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               GestureDetector(
                 onTap: _isLoading
                     ? null
                     : () => Navigator.pushNamed(context, '/register'),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.blue.shade500, Colors.blue.shade400],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    'Crear cuenta',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                child: Text(
+                  'Crear cuenta',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue.shade600,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.blue.shade400,
                   ),
                 ),
               ),
@@ -672,39 +521,14 @@ class _LoginPageState extends State<LoginPage> {
       controller: controller,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      style: TextStyle(
-        fontSize: isPortrait ? 16 : 14,
-        color: Colors.grey.shade800,
-        fontWeight: FontWeight.w500,
-      ),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(
-          color: Colors.grey.shade600,
-          fontWeight: FontWeight.w500,
-        ),
-        prefixIcon: Container(
-          margin: const EdgeInsets.all(12),
-          child: Icon(icon, color: Colors.blueAccent, size: 22),
-        ),
+        prefixIcon: Icon(icon, color: Colors.blueAccent),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
         ),
         filled: true,
         fillColor: Colors.grey.shade50,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: isPortrait ? 20 : 18,
-        ),
       ),
       validator: validator,
     );
@@ -721,56 +545,21 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      style: TextStyle(
-        fontSize: isPortrait ? 16 : 14,
-        color: Colors.grey.shade800,
-        fontWeight: FontWeight.w500,
-      ),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(
-          color: Colors.grey.shade600,
-          fontWeight: FontWeight.w500,
-        ),
-        prefixIcon: Container(
-          margin: const EdgeInsets.all(12),
-          child: const Icon(
-            Icons.lock_rounded,
-            color: Colors.blueAccent,
-            size: 22,
+        prefixIcon: const Icon(Icons.lock_rounded, color: Colors.blueAccent),
+        suffixIcon: IconButton(
+          icon: Icon(
+            obscureText
+                ? Icons.visibility_off_rounded
+                : Icons.visibility_rounded,
+            color: Colors.grey.shade600,
           ),
+          onPressed: onToggle,
         ),
-        suffixIcon: Container(
-          margin: const EdgeInsets.all(8),
-          child: IconButton(
-            icon: Icon(
-              obscureText
-                  ? Icons.visibility_off_rounded
-                  : Icons.visibility_rounded,
-              color: Colors.grey.shade600,
-              size: 22,
-            ),
-            onPressed: onToggle,
-          ),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         filled: true,
         fillColor: Colors.grey.shade50,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: isPortrait ? 20 : 18,
-        ),
       ),
       validator: validator,
     );

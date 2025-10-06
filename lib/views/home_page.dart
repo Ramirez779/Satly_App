@@ -14,11 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    DashboardPage(),
-    QuizPage(),
-    ProfilePage(),
-  ];
+  final List<Widget> _pages = [DashboardPage(), QuizPage(), ProfilePage()];
 
   final List<String> _pageTitles = ['Dashboard', 'Quizzes', 'Perfil'];
   final List<IconData> _pageIcons = [
@@ -111,23 +107,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              if (_currentIndex != 2)
-                IconButton(
-                  onPressed: _showLogoutDialog,
-                  icon: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: const Color(0x33FFFFFF),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(
-                      Icons.logout_rounded,
-                      size: isPortrait ? 20 : 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  tooltip: 'Cerrar sesión',
-                ),
             ],
           ),
         ),
@@ -157,7 +136,11 @@ class _HomePageState extends State<HomePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(_pageTitles.length, (index) {
-              return _buildNavItem(index, _pageIcons[index], _pageTitles[index]);
+              return _buildNavItem(
+                index,
+                _pageIcons[index],
+                _pageTitles[index],
+              );
             }),
           ),
         ),
@@ -220,7 +203,11 @@ class _HomePageState extends State<HomePage> {
                   color: Color(0x1AF44336),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.logout_rounded, size: 40, color: Colors.red.shade600),
+                child: Icon(
+                  Icons.logout_rounded,
+                  size: 40,
+                  color: Colors.red.shade600,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
@@ -245,9 +232,14 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                      child: const Text('Cancelar', style: TextStyle(color: Color(0xFF616161))),
+                      child: const Text(
+                        'Cancelar',
+                        style: TextStyle(color: Color(0xFF616161)),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -256,13 +248,22 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/',
+                          (route) => false,
+                        );
                       },
-                      child: const Text('Cerrar Sesión', style: TextStyle(color: Colors.white)),
+                      child: const Text(
+                        'Cerrar Sesión',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],

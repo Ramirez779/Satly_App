@@ -1,4 +1,3 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'views/welcome_page.dart';
 import 'views/login_page.dart';
@@ -50,6 +49,14 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: AppColors.textSecondary),
         ), 
       ),
+      // AÑADE ESTO - darkTheme básico para evitar el error
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        primarySwatch: Colors.blue,
+      ),
+      // Fuerza el tema claro siempre
+      themeMode: ThemeMode.light,
       initialRoute: '/',
       routes: {
         '/': (context) => const WelcomePage(),

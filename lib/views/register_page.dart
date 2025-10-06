@@ -172,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: lnurlController,
                 decoration: InputDecoration(
-                  labelText: 'LNURL o Código QR',
+                  labelText: 'LNURL',
                   labelStyle: TextStyle(color: Colors.grey.shade600),
                   prefixIcon: Container(
                     margin: const EdgeInsets.all(12),
@@ -192,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   filled: true,
                   fillColor: Colors.grey.shade50,
-                  hintText: 'lnurl1... o escanea QR',
+                  hintText: 'lnurl',
                   hintStyle: TextStyle(color: Colors.grey.shade400),
                 ),
                 autofocus: true,
@@ -447,27 +447,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 6),
-        
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade50, Colors.blue.shade100],
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.blue.shade200, width: 1),
-          ),
-          child: Text(
-            'Elige tu método',
-            style: TextStyle(
-              fontSize: isPortrait ? 16 : 14,
-              color: Colors.blue.shade800,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-            ),
-          ),
-        ),
+        SizedBox(height: isPortrait ? 20 : 16),
       ],
     );
   }
@@ -477,7 +457,7 @@ class _RegisterPageState extends State<RegisterPage> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(height: isPortrait ? 50 : 40),
+          SizedBox(height: isPortrait ? 30 : 24),
           _buildTextField(
             controller: _nameCtl,
             label: 'Nombre completo',
@@ -630,12 +610,12 @@ class _RegisterPageState extends State<RegisterPage> {
         
         SizedBox(height: 32),
         
-        // Footer
+        // Footer - Diseño similar al login
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
           decoration: BoxDecoration(
-            color: Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(color: Colors.grey.shade200),
           ),
           child: Row(
@@ -649,24 +629,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               GestureDetector(
                 onTap: _isLoading ? null : () => Navigator.pushReplacementNamed(context, '/login'),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.blue.shade500, Colors.blue.shade400],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    'Iniciar sesión',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                child: Text(
+                  'Iniciar sesión',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.blue.shade600,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.blue.shade400,
                   ),
                 ),
               ),
