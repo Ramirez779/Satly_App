@@ -1,6 +1,7 @@
 // views/quiz_page.dart
 import 'package:flutter/material.dart';
 import '../widgets/custom_button.dart';
+import '../data/quiz_categories_list.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -14,260 +15,31 @@ class _QuizPageState extends State<QuizPage> {
   int _score = 0;
   bool _quizCompleted = false;
   String? _selectedCategory;
+  String? _selectedQuizId;
   String? _selectedAnswer;
   bool _answerSubmitted = false;
 
-  // Categorías de quizzes
-  final List<Map<String, dynamic>> _categories = [
-    {
-      'id': 'basico',
-      'name': 'Básico',
-      'color': Colors.blueAccent,
-      'icon': Icons.school_rounded,
-      'description': 'Conceptos fundamentales de Bitcoin',
-      'reward': '10 SATS',
-      'gradient': [Colors.blueAccent, Colors.lightBlueAccent],
-      'difficulty': '★☆☆',
-    },
-    {
-      'id': 'intermedio',
-      'name': 'Intermedio',
-      'color': Colors.orange,
-      'icon': Icons.trending_up_rounded,
-      'description': 'Temas más avanzados de Bitcoin',
-      'reward': '20 SATS',
-      'gradient': [Colors.orangeAccent, Colors.amberAccent],
-      'difficulty': '★★☆',
-    },
-    {
-      'id': 'avanzado',
-      'name': 'Avanzado',
-      'color': Colors.purple,
-      'icon': Icons.auto_awesome_rounded,
-      'description': 'Para expertos en Bitcoin',
-      'reward': '30 SATS',
-      'gradient': [Colors.purpleAccent, Colors.deepPurpleAccent],
-      'difficulty': '★★★',
-    },
-    {
-      'id': 'lightning',
-      'name': 'Lightning Network',
-      'color': Colors.green,
-      'icon': Icons.bolt_rounded,
-      'description': 'Pagos instantáneos y de bajo costo',
-      'reward': '25 SATS',
-      'gradient': [Colors.greenAccent, Colors.tealAccent],
-      'difficulty': '★★☆',
-    },
-  ];
+  // Usar las categorías importadas
+  final List<Map<String, dynamic>> _categories = QuizCategoriesList.categories;
 
-  // Preguntas por categoría
-  final Map<String, List<Map<String, dynamic>>> _questionsByCategory = {
-    'basico': [
-      {
-        'question': '¿Qué es Bitcoin?',
-        'answers': [
-          'Una criptomoneda descentralizada',
-          'Una red social',
-          'Un banco digital',
-          'Un juego en línea',
-        ],
-        'correct': 0,
-        'explanation':
-            'Bitcoin es la primera criptomoneda descentralizada creada en 2009.',
-      },
-      {
-        'question': '¿Quién creó Bitcoin?',
-        'answers': [
-          'Satoshi Nakamoto',
-          'Vitalik Buterin',
-          'Elon Musk',
-          'Mark Zuckerberg',
-        ],
-        'correct': 0,
-        'explanation':
-            'Bitcoin fue creado por una persona o grupo bajo el pseudónimo Satoshi Nakamoto.',
-      },
-      {
-        'question': '¿Qué es la blockchain?',
-        'answers': [
-          'Un libro de contabilidad distribuido',
-          'Una cadena de tiendas',
-          'Un tipo de contrato',
-          'Un algoritmo de compresión',
-        ],
-        'correct': 0,
-        'explanation':
-            'Blockchain es un libro de contabilidad distribuido que registra todas las transacciones.',
-      },
-      {
-        'question': '¿Qué es un wallet de Bitcoin?',
-        'answers': [
-          'Una billetera digital para almacenar claves',
-          'Un lugar físico para guardar bitcoins',
-          'Un tipo de exchange',
-          'Una tarjeta de débito',
-        ],
-        'correct': 0,
-        'explanation':
-            'Un wallet almacena las claves privadas que te permiten acceder a tus bitcoins.',
-      },
-    ],
-    'intermedio': [
-      {
-        'question': '¿Qué es la minería de Bitcoin?',
-        'answers': [
-          'El proceso de verificar transacciones',
-          'Extraer bitcoins del suelo',
-          'Comprar bitcoins en exchange',
-          'Crear wallets digitales',
-        ],
-        'correct': 0,
-        'explanation':
-            'La minería implica verificar transacciones y agregarlas a la blockchain.',
-      },
-      {
-        'question': '¿Qué es un halving?',
-        'answers': [
-          'Reducción a la mitad de la recompensa minera',
-          'Dividir un bitcoin en partes',
-          'Reducir las tarifas de transacción',
-          'Duplicar el suministro de bitcoin',
-        ],
-        'correct': 0,
-        'explanation':
-            'El halving reduce la recompensa de los mineros a la mitad cada 4 años aproximadamente.',
-      },
-      {
-        'question': '¿Qué es la dificultad minera?',
-        'answers': [
-          'La medida de lo difícil que es minar un bloque',
-          'La complejidad de usar un wallet',
-          'El tiempo para confirmar una transacción',
-          'El costo de comprar bitcoin',
-        ],
-        'correct': 0,
-        'explanation':
-            'La dificultad minera se ajusta para mantener el tiempo de bloque en 10 minutos.',
-      },
-      {
-        'question': '¿Qué es un nodo completo?',
-        'answers': [
-          'Un software que valida todas las reglas de Bitcoin',
-          'Un minero especializado',
-          'Un wallet con muchos bitcoins',
-          'Un exchange grande',
-        ],
-        'correct': 0,
-        'explanation':
-            'Los nodos completos validan transacciones y bloques manteniendo la red descentralizada.',
-      },
-    ],
-    'avanzado': [
-      {
-        'question': '¿Qué es SegWit?',
-        'answers': [
-          'Segregated Witness - mejora de escalabilidad',
-          'Security Witness - protocolo de seguridad',
-          'Segment Warning - alerta de red',
-          'Secure Wallet - tipo de cartera',
-        ],
-        'correct': 0,
-        'explanation':
-            'SegWit separa la firma digital de los datos de transacción para aumentar capacidad.',
-      },
-      {
-        'question': '¿Qué es Taproot?',
-        'answers': [
-          'Actualización que mejora privacidad y eficiencia',
-          'Un tipo de nodo completo',
-          'Algoritmo de minería',
-          'Protocolo de exchange',
-        ],
-        'correct': 0,
-        'explanation':
-            'Taproot mejora la privacidad de las transacciones complejas como los Lightning Channels.',
-      },
-      {
-        'question': '¿Qué es el Lightning Network?',
-        'answers': [
-          'Red de pagos instantáneos de segunda capa',
-          'Red de minería acelerada',
-          'Protocolo de seguridad mejorado',
-          'Tipo de wallet hardware',
-        ],
-        'correct': 0,
-        'explanation':
-            'Lightning Network permite transacciones instantáneas y de bajo costo.',
-      },
-      {
-        'question': '¿Qué son las multisig?',
-        'answers': [
-          'Direcciones que requieren múltiples firmas',
-          'Múltiples transacciones en un bloque',
-          'Varios mineros trabajando juntos',
-          'Múltiples wallets en un dispositivo',
-        ],
-        'correct': 0,
-        'explanation':
-            'Multisig requiere múltiples claves privadas para autorizar una transacción, mejorando seguridad.',
-      },
-    ],
-    'lightning': [
-      {
-        'question': '¿Qué problema resuelve Lightning Network?',
-        'answers': [
-          'Escalabilidad y tarifas altas',
-          'Seguridad de los wallets',
-          'Volatilidad del precio',
-          'Adopción masiva',
-        ],
-        'correct': 0,
-        'explanation':
-            'Lightning resuelve problemas de escalabilidad permitiendo transacciones fuera de la cadena principal.',
-      },
-      {
-        'question': '¿Qué es un payment channel?',
-        'answers': [
-          'Conexión entre dos usuarios para pagos rápidos',
-          'Canal de comunicación con mineros',
-          'Método para comprar bitcoin',
-          'Tipo de wallet específico',
-        ],
-        'correct': 0,
-        'explanation':
-            'Los payment channels permiten múltiples transacciones instantáneas con una sola comisión.',
-      },
-      {
-        'question': '¿Qué son los satoshis en Lightning?',
-        'answers': [
-          'La unidad más pequeña de bitcoin',
-          'Los nodos de la red',
-          'Las comisiones de transacción',
-          'Los canales de pago',
-        ],
-        'correct': 0,
-        'explanation':
-            'Los satoshis (0.00000001 BTC) son la unidad base para transacciones en Lightning.',
-      },
-      {
-        'question': '¿Qué es un LNURL?',
-        'answers': [
-          'Estándar para URLs de Lightning',
-          'URL para comprar bitcoin',
-          'Dirección de un nodo Lightning',
-          'Código QR de un wallet',
-        ],
-        'correct': 0,
-        'explanation':
-            'LNURL estandariza las interacciones con la red Lightning mediante URLs simples.',
-      },
-    ],
-  };
-
-  List<Map<String, dynamic>> get _currentQuestions {
+  // Obtener los quizzes disponibles para la categoría seleccionada
+  List<Map<String, dynamic>> get _availableQuizzes {
     if (_selectedCategory == null) return [];
-    return _questionsByCategory[_selectedCategory!] ?? [];
+    final category = _categories.firstWhere(
+      (cat) => cat['id'] == _selectedCategory,
+      orElse: () => {'quizzes': []},
+    );
+    return List<Map<String, dynamic>>.from(category['quizzes'] ?? []);
+  }
+
+  // Obtener las preguntas del quiz seleccionado
+  List<Map<String, dynamic>> get _currentQuestions {
+    if (_selectedQuizId == null) return [];
+    final quiz = _availableQuizzes.firstWhere(
+      (quiz) => quiz['id'] == _selectedQuizId,
+      orElse: () => {'questions': []},
+    );
+    return List<Map<String, dynamic>>.from(quiz['questions'] ?? []);
   }
 
   Map<String, dynamic> get _currentQuestion {
@@ -281,9 +53,27 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
+  Map<String, dynamic> get _currentQuiz {
+    return _availableQuizzes.firstWhere(
+      (quiz) => quiz['id'] == _selectedQuizId,
+      orElse: () => _availableQuizzes[0],
+    );
+  }
+
   void _selectCategory(String categoryId) {
     setState(() {
       _selectedCategory = categoryId;
+      _selectedQuizId = null;
+      _currentQuestionIndex = 0;
+      _score = 0;
+      _quizCompleted = false;
+      _answerSubmitted = false;
+    });
+  }
+
+  void _selectQuiz(String quizId) {
+    setState(() {
+      _selectedQuizId = quizId;
       _currentQuestionIndex = 0;
       _score = 0;
       _quizCompleted = false;
@@ -321,6 +111,7 @@ class _QuizPageState extends State<QuizPage> {
   void _restartQuiz() {
     setState(() {
       _selectedCategory = null;
+      _selectedQuizId = null;
       _currentQuestionIndex = 0;
       _score = 0;
       _quizCompleted = false;
@@ -335,6 +126,17 @@ class _QuizPageState extends State<QuizPage> {
 
   void _retryQuiz() {
     setState(() {
+      _currentQuestionIndex = 0;
+      _score = 0;
+      _quizCompleted = false;
+      _selectedAnswer = null;
+      _answerSubmitted = false;
+    });
+  }
+
+  void _backToQuizSelection() {
+    setState(() {
+      _selectedQuizId = null;
       _currentQuestionIndex = 0;
       _score = 0;
       _quizCompleted = false;
@@ -400,6 +202,10 @@ class _QuizPageState extends State<QuizPage> {
   ) {
     if (_selectedCategory == null) {
       return _buildCategorySelection(isMobile, isTablet, isDesktop, maxWidth);
+    }
+
+    if (_selectedQuizId == null) {
+      return _buildQuizSelection(isMobile, isTablet, isDesktop);
     }
 
     if (_quizCompleted) {
@@ -507,6 +313,190 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildQuizSelection(bool isMobile, bool isTablet, bool isDesktop) {
+    final category = _currentCategory;
+    final gradientColors = (category['gradient'] as List<Color>);
+    final double titleSize = isMobile ? 24 : (isTablet ? 20 : 28);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                size: isMobile ? 24 : (isTablet ? 20 : 28),
+              ),
+              onPressed: _restartQuiz,
+              color: Colors.blueAccent,
+            ),
+            ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: gradientColors,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ).createShader(bounds),
+              child: Text(
+                'Elige un Quiz - ${category['name']}',
+                style: TextStyle(
+                  fontSize: titleSize,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: isMobile
+              ? 16
+              : isTablet
+              ? 12
+              : 16,
+        ),
+        Text(
+          'Selecciona uno de los quizzes disponibles:',
+          style: TextStyle(
+            fontSize: isMobile
+                ? 16
+                : isTablet
+                ? 14
+                : 18,
+            color: const Color(0xFF757575),
+          ),
+        ),
+        SizedBox(
+          height: isMobile
+              ? 20
+              : isTablet
+              ? 16
+              : 24,
+        ),
+
+        // Lista de quizzes
+        Expanded(
+          child: ListView.separated(
+            itemCount: _availableQuizzes.length,
+            separatorBuilder: (context, index) => SizedBox(
+              height: isMobile
+                  ? 16
+                  : isTablet
+                  ? 12
+                  : 16,
+            ),
+            itemBuilder: (context, index) {
+              final quiz = _availableQuizzes[index];
+              return _buildQuizCard(
+                quiz,
+                gradientColors,
+                isMobile,
+                isTablet,
+                isDesktop,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuizCard(
+    Map<String, dynamic> quiz,
+    List<Color> gradientColors,
+    bool isMobile,
+    bool isTablet,
+    bool isDesktop,
+  ) {
+    final double padding = isMobile ? 20 : (isTablet ? 16 : 24);
+    final double titleSize = isMobile ? 18 : (isTablet ? 16 : 20);
+    final double descSize = isMobile ? 14 : (isTablet ? 13 : 16);
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () => _selectQuiz(quiz['id']),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  gradientColors[0].withOpacity(0.8),
+                  gradientColors[1].withOpacity(0.8),
+                ],
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(padding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    quiz['name'] as String,
+                    style: TextStyle(
+                      fontSize: titleSize,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    quiz['description'] as String,
+                    style: TextStyle(
+                      fontSize: descSize,
+                      color: const Color(0xE6FFFFFF),
+                    ),
+                    maxLines: 2,
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0x33FFFFFF),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '${(quiz['questions'] as List).length} preguntas',
+                          style: TextStyle(
+                            fontSize: isMobile
+                                ? 12
+                                : isTablet
+                                ? 11
+                                : 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.arrow_forward_rounded,
+                        color: Colors.white,
+                        size: isMobile ? 20 : (isTablet ? 18 : 24),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -638,6 +628,7 @@ class _QuizPageState extends State<QuizPage> {
 
   Widget _buildQuiz(bool isMobile, bool isTablet, bool isDesktop) {
     final category = _currentCategory;
+    final quiz = _currentQuiz;
     final gradientColors = (category['gradient'] as List<Color>);
     final bool isSelected = _selectedAnswer != null;
     final bool isCorrect =
@@ -669,7 +660,7 @@ class _QuizPageState extends State<QuizPage> {
                           ? 20
                           : 28,
                     ),
-                    onPressed: _restartQuiz,
+                    onPressed: _backToQuizSelection,
                     color: Colors.blueAccent,
                   ),
                   Expanded(
@@ -680,13 +671,13 @@ class _QuizPageState extends State<QuizPage> {
                         end: Alignment.centerRight,
                       ).createShader(bounds),
                       child: Text(
-                        'Quiz ${category['name']}',
+                        '${quiz['name']}',
                         style: TextStyle(
                           fontSize: isMobile
-                              ? 24
-                              : isTablet
                               ? 20
-                              : 28,
+                              : isTablet
+                              ? 18
+                              : 24,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -1071,6 +1062,7 @@ class _QuizPageState extends State<QuizPage> {
   Widget _buildResults(bool isMobile, bool isTablet, bool isDesktop) {
     final percentage = (_score / _currentQuestions.length * 100).round();
     final category = _currentCategory;
+    final quiz = _currentQuiz;
     final gradientColors = (category['gradient'] as List<Color>);
     final hasPassed = percentage >= 70;
 
@@ -1170,22 +1162,23 @@ class _QuizPageState extends State<QuizPage> {
               child: Column(
                 children: [
                   Text(
-                    'Categoría: ${category['name']}',
+                    '${quiz['name']}',
                     style: TextStyle(
                       fontSize: isMobile
                           ? 18
                           : isTablet
                           ? 16
                           : 20,
-                      color: const Color(0xFF757575),
+                      fontWeight: FontWeight.w600,
+                      color: gradientColors[0],
                     ),
                   ),
                   SizedBox(
                     height: isMobile
-                        ? 12
-                        : isTablet
                         ? 8
-                        : 12,
+                        : isTablet
+                        ? 6
+                        : 8,
                   ),
                   Text(
                     '$_score/${_currentQuestions.length} Preguntas',
@@ -1350,8 +1343,8 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ],
         CustomButton(
-          text: 'Nuevo Quiz',
-          onPressed: _restartQuiz,
+          text: 'Elegir Otro Quiz',
+          onPressed: _backToQuizSelection,
           isPrimary: !hasPassed,
           height: isMobile
               ? 56
@@ -1396,8 +1389,8 @@ class _QuizPageState extends State<QuizPage> {
         ],
         Expanded(
           child: CustomButton(
-            text: 'Nuevo Quiz',
-            onPressed: _restartQuiz,
+            text: 'Elegir Otro Quiz',
+            onPressed: _backToQuizSelection,
             isPrimary: !hasPassed,
             height: 60,
           ),
