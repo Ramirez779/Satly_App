@@ -10,7 +10,8 @@ class IntermedioQuiz {
     'reward': '20 SATS',
     'gradient': [Colors.orangeAccent, Colors.deepOrange],
     'difficulty': '★★☆',
-    'quizzes': [ // ← 2 QUIZZES DENTRO DE INTERMEDIO
+    'quizzes': [
+      // ← 2 QUIZZES DENTRO DE INTERMEDIO
       // QUIZ 1 - Tecnología Bitcoin
       {
         'id': 'intermedio1',
@@ -26,7 +27,8 @@ class IntermedioQuiz {
               'El problema técnico de la red',
             ],
             'correct': 0,
-            'explanation': 'La dificultad ajusta cada 2016 bloques para mantener el tiempo de bloque en 10 minutos.',
+            'explanation':
+                'La dificultad ajusta cada 2016 bloques para mantener el tiempo de bloque en 10 minutos.',
           },
           {
             'question': '¿Qué es un hash?',
@@ -37,7 +39,8 @@ class IntermedioQuiz {
               'Un código de seguridad',
             ],
             'correct': 0,
-            'explanation': 'Un hash convierte datos de cualquier tamaño en una cadena fija de caracteres.',
+            'explanation':
+                'Un hash convierte datos de cualquier tamaño en una cadena fija de caracteres.',
           },
           {
             'question': '¿Qué es la prueba de trabajo (PoW)?',
@@ -48,7 +51,8 @@ class IntermedioQuiz {
               'Un tipo de contrato inteligente',
             ],
             'correct': 0,
-            'explanation': 'PoW requiere que los mineros resuelvan problemas matemáticos para validar bloques.',
+            'explanation':
+                'PoW requiere que los mineros resuelvan problemas matemáticos para validar bloques.',
           },
           {
             'question': '¿Qué es la capitalización de mercado?',
@@ -59,7 +63,8 @@ class IntermedioQuiz {
               'La cantidad en exchanges',
             ],
             'correct': 0,
-            'explanation': 'Se calcula multiplicando el precio actual por el total de bitcoins en circulación.',
+            'explanation':
+                'Se calcula multiplicando el precio actual por el total de bitcoins en circulación.',
           },
         ],
       },
@@ -78,7 +83,8 @@ class IntermedioQuiz {
               'Un tipo de dirección Bitcoin',
             ],
             'correct': 0,
-            'explanation': 'La semilla permite recuperar todas las claves privadas de una billetera.',
+            'explanation':
+                'La semilla permite recuperar todas las claves privadas de una billetera.',
           },
           {
             'question': '¿Qué es una billetera HD?',
@@ -89,7 +95,8 @@ class IntermedioQuiz {
               'High Security - billetera más segura',
             ],
             'correct': 0,
-            'explanation': 'Las billeteras HD pueden generar infinitas direcciones desde una sola semilla.',
+            'explanation':
+                'Las billeteras HD pueden generar infinitas direcciones desde una sola semilla.',
           },
           {
             'question': '¿Qué es una billetera multisig?',
@@ -100,7 +107,8 @@ class IntermedioQuiz {
               'Una billetera con alta seguridad',
             ],
             'correct': 0,
-            'explanation': 'Multisig mejora la seguridad requiriendo múltiples aprobaciones.',
+            'explanation':
+                'Multisig mejora la seguridad requiriendo múltiples aprobaciones.',
           },
           {
             'question': '¿Qué es un explorador de bloques?',
@@ -111,10 +119,11 @@ class IntermedioQuiz {
               'Una aplicación para comprar Bitcoin',
             ],
             'correct': 0,
-            'explanation': 'Permite ver todas las transacciones y bloques de la red Bitcoin.',
+            'explanation':
+                'Permite ver todas las transacciones y bloques de la red Bitcoin.',
           },
         ],
-      }
+      },
     ],
   };
 }

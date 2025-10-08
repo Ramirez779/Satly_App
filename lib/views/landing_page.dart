@@ -18,10 +18,14 @@ class _LandingPageState extends State<LandingPage>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _fadeAnimation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    );
     _animationController.forward();
   }
 
@@ -62,8 +66,9 @@ class _LandingPageState extends State<LandingPage>
                 ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                      minHeight: size.height -
-                          MediaQuery.of(context).padding.vertical),
+                    minHeight:
+                        size.height - MediaQuery.of(context).padding.vertical,
+                  ),
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: Column(
@@ -159,21 +164,37 @@ class _LandingPageState extends State<LandingPage>
       ),
       child: Column(
         children: [
-          _buildFeatureItem(Icons.school_rounded, "Aprendizaje Gamificado",
-              "Quizzes interactivos y progresivos", isPortrait),
+          _buildFeatureItem(
+            Icons.school_rounded,
+            "Aprendizaje Gamificado",
+            "Quizzes interactivos y progresivos",
+            isPortrait,
+          ),
           SizedBox(height: isPortrait ? 16 : 12),
-          _buildFeatureItem(Icons.bolt_rounded, "Recompensas Reales",
-              "Gana SATS por cada logro", isPortrait),
+          _buildFeatureItem(
+            Icons.bolt_rounded,
+            "Recompensas Reales",
+            "Gana SATS por cada logro",
+            isPortrait,
+          ),
           SizedBox(height: isPortrait ? 16 : 12),
-          _buildFeatureItem(Icons.trending_up_rounded, "Progreso Continuo",
-              "Mejora tus habilidades Bitcoin", isPortrait),
+          _buildFeatureItem(
+            Icons.trending_up_rounded,
+            "Progreso Continuo",
+            "Mejora tus habilidades Bitcoin",
+            isPortrait,
+          ),
         ],
       ),
     );
   }
 
   Widget _buildFeatureItem(
-      IconData icon, String title, String subtitle, bool isPortrait) {
+    IconData icon,
+    String title,
+    String subtitle,
+    bool isPortrait,
+  ) {
     return Row(
       children: [
         Container(
@@ -191,16 +212,22 @@ class _LandingPageState extends State<LandingPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
-                  style: TextStyle(
-                      fontSize: isPortrait ? 16 : 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87)),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: isPortrait ? 16 : 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
               SizedBox(height: isPortrait ? 4 : 2),
-              Text(subtitle,
-                  style: TextStyle(
-                      fontSize: isPortrait ? 14 : 12,
-                      color: Colors.grey.shade600)),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: isPortrait ? 14 : 12,
+                  color: Colors.grey.shade600,
+                ),
+              ),
             ],
           ),
         ),
@@ -234,16 +261,20 @@ class _LandingPageState extends State<LandingPage>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.celebration_rounded,
-                  size: isPortrait ? 20 : 18, color: Colors.blueAccent),
+              Icon(
+                Icons.celebration_rounded,
+                size: isPortrait ? 20 : 18,
+                color: Colors.blueAccent,
+              ),
               SizedBox(width: isPortrait ? 8 : 6),
               Flexible(
                 child: Text(
                   "¡Únete a la revolución Bitcoin hoy mismo!",
                   style: TextStyle(
-                      fontSize: isPortrait ? 14 : 12,
-                      color: Colors.blue[800],
-                      fontWeight: FontWeight.w600),
+                    fontSize: isPortrait ? 14 : 12,
+                    color: Colors.blue[800],
+                    fontWeight: FontWeight.w600,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

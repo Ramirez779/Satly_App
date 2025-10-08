@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           titleLarge: TextStyle(color: AppColors.textPrimary),
           bodyMedium: TextStyle(color: AppColors.textSecondary),
-        ), 
+        ),
       ),
       // AÑADE ESTO - darkTheme básico para evitar el error
       darkTheme: ThemeData(

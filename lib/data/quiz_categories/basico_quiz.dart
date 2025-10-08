@@ -11,7 +11,8 @@ class BasicoQuiz {
     'reward': '20 SATS',
     'gradient': [Colors.blueAccent, Colors.lightBlueAccent],
     'difficulty': '★☆☆',
-    'quizzes': [ // ← LISTA DE QUIZZES DENTRO DE ESTA CATEGORÍA
+    'quizzes': [
+      // ← LISTA DE QUIZZES DENTRO DE ESTA CATEGORÍA
       {
         'id': 'basico1',
         'name': 'Fundamentos Esenciales',
@@ -26,7 +27,8 @@ class BasicoQuiz {
               'Un juego en línea',
             ],
             'correct': 0,
-            'explanation': 'Bitcoin es la primera criptomoneda descentralizada creada en 2009.',
+            'explanation':
+                'Bitcoin es la primera criptomoneda descentralizada creada en 2009.',
           },
           {
             'question': '¿Quién creó Bitcoin?',
@@ -37,7 +39,8 @@ class BasicoQuiz {
               'Mark Zuckerberg',
             ],
             'correct': 0,
-            'explanation': 'Bitcoin fue creado por una persona o grupo bajo el pseudónimo Satoshi Nakamoto.',
+            'explanation':
+                'Bitcoin fue creado por una persona o grupo bajo el pseudónimo Satoshi Nakamoto.',
           },
           {
             'question': '¿Qué es la blockchain?',
@@ -48,7 +51,8 @@ class BasicoQuiz {
               'Un algoritmo de compresión',
             ],
             'correct': 0,
-            'explanation': 'Blockchain es un libro de contabilidad distribuido que registra todas las transacciones.',
+            'explanation':
+                'Blockchain es un libro de contabilidad distribuido que registra todas las transacciones.',
           },
           {
             'question': '¿Qué es un wallet de Bitcoin?',
@@ -59,12 +63,13 @@ class BasicoQuiz {
               'Una tarjeta de débito',
             ],
             'correct': 0,
-            'explanation': 'Un wallet almacena las claves privadas que te permiten acceder a tus bitcoins.',
+            'explanation':
+                'Un wallet almacena las claves privadas que te permiten acceder a tus bitcoins.',
           },
         ],
       },
       {
-        'id': 'basico2', 
+        'id': 'basico2',
         'name': 'Básico Vol. 2',
         'description': 'Más conceptos fundamentales',
         'questions': [
@@ -77,7 +82,8 @@ class BasicoQuiz {
               'Una unidad de minería',
             ],
             'correct': 0,
-            'explanation': 'Un bloque es un grupo de transacciones que se confirman y añaden a la blockchain.',
+            'explanation':
+                'Un bloque es un grupo de transacciones que se confirman y añaden a la blockchain.',
           },
           {
             'question': '¿Qué es la confirmación de una transacción?',
@@ -88,7 +94,8 @@ class BasicoQuiz {
               'Cuando se verifica tu identidad',
             ],
             'correct': 0,
-            'explanation': 'Una transacción se considera confirmada cuando es incluida en un bloque minado.',
+            'explanation':
+                'Una transacción se considera confirmada cuando es incluida en un bloque minado.',
           },
           {
             'question': '¿Qué es la prueba de trabajo?',
@@ -99,7 +106,8 @@ class BasicoQuiz {
               'Un método para comprar Bitcoin',
             ],
             'correct': 0,
-            'explanation': 'Proof of Work es el algoritmo que los mineros resuelven para validar transacciones.',
+            'explanation':
+                'Proof of Work es el algoritmo que los mineros resuelven para validar transacciones.',
           },
           {
             'question': '¿Qué es un satoshi?',
@@ -110,10 +118,11 @@ class BasicoQuiz {
               'Un algoritmo de seguridad',
             ],
             'correct': 0,
-            'explanation': 'Un satoshi es igual a 0.00000001 BTC, la unidad más pequeña de Bitcoin.',
+            'explanation':
+                'Un satoshi es igual a 0.00000001 BTC, la unidad más pequeña de Bitcoin.',
           },
         ],
-      }
+      },
     ],
   };
 }

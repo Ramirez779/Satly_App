@@ -23,7 +23,8 @@ class Basico2Quiz {
         'Una unidad de minería',
       ],
       'correct': 0,
-      'explanation': 'Un bloque es un grupo de transacciones que se confirman y añaden a la blockchain aproximadamente cada 10 minutos.',
+      'explanation':
+          'Un bloque es un grupo de transacciones que se confirman y añaden a la blockchain aproximadamente cada 10 minutos.',
     },
     {
       'question': '¿Qué es la confirmación de una transacción?',
@@ -34,7 +35,8 @@ class Basico2Quiz {
         'Cuando se verifica tu identidad',
       ],
       'correct': 0,
-      'explanation': 'Una transacción se considera confirmada cuando es incluida en un bloque minado en la blockchain.',
+      'explanation':
+          'Una transacción se considera confirmada cuando es incluida en un bloque minado en la blockchain.',
     },
     {
       'question': '¿Qué es la prueba de trabajo (Proof of Work)?',
@@ -45,7 +47,8 @@ class Basico2Quiz {
         'Un método para comprar Bitcoin',
       ],
       'correct': 0,
-      'explanation': 'Proof of Work es el algoritmo que los mineros resuelven para validar transacciones y crear nuevos bloques.',
+      'explanation':
+          'Proof of Work es el algoritmo que los mineros resuelven para validar transacciones y crear nuevos bloques.',
     },
     {
       'question': '¿Qué es la dificultad de minería?',
@@ -56,7 +59,8 @@ class Basico2Quiz {
         'El costo de comprar bitcoin',
       ],
       'correct': 0,
-      'explanation': 'La dificultad minera se ajusta automáticamente para mantener el tiempo de bloque en aproximadamente 10 minutos.',
+      'explanation':
+          'La dificultad minera se ajusta automáticamente para mantener el tiempo de bloque en aproximadamente 10 minutos.',
     },
     {
       'question': '¿Qué es un satoshi?',
@@ -67,7 +71,8 @@ class Basico2Quiz {
         'Un algoritmo de seguridad',
       ],
       'correct': 0,
-      'explanation': 'Un satoshi es igual a 0.00000001 BTC, la unidad más pequeña de Bitcoin.',
+      'explanation':
+          'Un satoshi es igual a 0.00000001 BTC, la unidad más pequeña de Bitcoin.',
     },
     {
       'question': '¿Qué es la capitalización de mercado?',
@@ -78,7 +83,8 @@ class Basico2Quiz {
         'El volumen de transacciones diarias',
       ],
       'correct': 0,
-      'explanation': 'La capitalización de mercado se calcula multiplicando el precio actual por el total de Bitcoins en circulación.',
+      'explanation':
+          'La capitalización de mercado se calcula multiplicando el precio actual por el total de Bitcoins en circulación.',
     },
     {
       'question': '¿Qué es un exchange?',
@@ -89,7 +95,8 @@ class Basico2Quiz {
         'Una dirección Bitcoin',
       ],
       'correct': 0,
-      'explanation': 'Un exchange es una plataforma que permite comprar, vender e intercambiar Bitcoin por otras monedas.',
+      'explanation':
+          'Un exchange es una plataforma que permite comprar, vender e intercambiar Bitcoin por otras monedas.',
     },
     {
       'question': '¿Qué significa que Bitcoin es descentralizado?',
@@ -100,7 +107,8 @@ class Basico2Quiz {
         'Es ilegal en todos los países',
       ],
       'correct': 0,
-      'explanation': 'Bitcoin es descentralizado porque funciona sin un banco central o administrador único, siendo una red peer-to-peer.',
+      'explanation':
+          'Bitcoin es descentralizado porque funciona sin un banco central o administrador único, siendo una red peer-to-peer.',
     },
   ];
 }

@@ -18,7 +18,10 @@ class ThemeSelector extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Tema', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Tema',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             RadioListTile<ThemeMode>(
               title: const Text('Claro'),
               value: ThemeMode.light,

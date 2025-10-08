@@ -22,7 +22,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // Servicio de autenticación integrado
   bool _isValidEmail(String email) {
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     return emailRegex.hasMatch(email.trim());
   }
 
@@ -37,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<Map<String, dynamic>> _registerWithEmail() async {
     await Future.delayed(const Duration(seconds: 2));
-    
+
     if (!_isValidEmail(_emailCtl.text.trim())) {
       throw Exception('Formato de email inválido');
     }
@@ -48,31 +50,30 @@ class _RegisterPageState extends State<RegisterPage> {
 
     // Simulación de registro exitoso
     return {
-      'success': true, 
+      'success': true,
       'message': 'Registro exitoso',
       'user': {
         'name': _nameCtl.text.trim(),
         'email': _emailCtl.text.trim(),
-        'authMethod': 'email'
-      }
+        'authMethod': 'email',
+      },
     };
   }
 
   Future<Map<String, dynamic>> _registerWithLNURL(String lnurl) async {
     await Future.delayed(const Duration(seconds: 3));
-    
+
     if (!_isValidLNURL(lnurl)) {
-      throw Exception('Formato LNURL inválido. Use lnurl1..., https://... o código LNURL');
+      throw Exception(
+        'Formato LNURL inválido. Use lnurl1..., https://... o código LNURL',
+      );
     }
 
     // Simulación de autenticación LNURL exitosa
     return {
       'success': true,
       'message': 'Autenticación Lightning exitosa',
-      'user': {
-        'lnurl': lnurl,
-        'authMethod': 'lightning'
-      }
+      'user': {'lnurl': lnurl, 'authMethod': 'lightning'},
     };
   }
 
@@ -93,7 +94,9 @@ class _RegisterPageState extends State<RegisterPage> {
             content: Text(result['message']),
             backgroundColor: Colors.green.shade600,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
         Navigator.pushReplacementNamed(context, '/home');
@@ -105,7 +108,9 @@ class _RegisterPageState extends State<RegisterPage> {
           content: Text('Error: $error'),
           backgroundColor: Colors.red.shade600,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       );
     } finally {
@@ -147,7 +152,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                child: const Icon(Icons.flash_on, color: Colors.white, size: 30),
+                child: const Icon(
+                  Icons.flash_on,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
@@ -188,7 +197,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Colors.orange.shade600, width: 2),
+                    borderSide: BorderSide(
+                      color: Colors.orange.shade600,
+                      width: 2,
+                    ),
                   ),
                   filled: true,
                   fillColor: Colors.grey.shade50,
@@ -206,7 +218,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.grey.shade700,
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                         side: BorderSide(color: Colors.grey.shade300),
                       ),
                       child: const Text('Cancelar'),
@@ -249,7 +263,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                         ),
                         child: const Text(
                           'Continuar',
@@ -272,7 +288,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _processLNURLRegistration(String lnurl) async {
     if (_isLoading) return;
-    
+
     setState(() => _isLoading = true);
 
     try {
@@ -285,10 +301,8 @@ class _RegisterPageState extends State<RegisterPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => CompleteProfilePage(
-              lnurl: lnurl,
-              authMethod: 'lightning',
-            ),
+            builder: (context) =>
+                CompleteProfilePage(lnurl: lnurl, authMethod: 'lightning'),
           ),
         );
       }
@@ -349,7 +363,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height -
+                  minHeight:
+                      MediaQuery.of(context).size.height -
                       MediaQuery.of(context).padding.vertical,
                 ),
                 child: Column(
@@ -396,9 +411,10 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Stack(
             children: [
               Center(
-                child: Icon(Icons.person_add_alt_1_rounded, 
-                  size: isPortrait ? 55 : 45, 
-                  color: Colors.white
+                child: Icon(
+                  Icons.person_add_alt_1_rounded,
+                  size: isPortrait ? 55 : 45,
+                  color: Colors.white,
                 ),
               ),
               Positioned(
@@ -417,7 +433,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         SizedBox(height: isPortrait ? 28 : 20),
-        
+
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(
             colors: [Color(0xFF0066FF), Color(0xFF00BFFF)],
@@ -436,7 +452,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         SizedBox(height: 8),
-        
+
         Text(
           'Únete a la comunidad SparkSeed',
           style: TextStyle(
@@ -484,7 +500,8 @@ class _RegisterPageState extends State<RegisterPage> {
             validator: (v) {
               if (v == null || v.trim().isEmpty) return 'Ingresa tu email';
               final emailRegex = RegExp(
-                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+              );
               if (!emailRegex.hasMatch(v.trim())) return 'Email inválido';
               return null;
             },
@@ -541,9 +558,9 @@ class _RegisterPageState extends State<RegisterPage> {
             height: isPortrait ? 60 : 56,
           ),
         ),
-        
+
         SizedBox(height: 24),
-        
+
         // Separador
         Row(
           children: [
@@ -561,9 +578,9 @@ class _RegisterPageState extends State<RegisterPage> {
             Expanded(child: Divider(color: Colors.grey.shade300)),
           ],
         ),
-        
+
         SizedBox(height: 24),
-        
+
         // Botón Lightning
         Container(
           decoration: BoxDecoration(
@@ -590,7 +607,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.flash_on_rounded, color: Colors.orange.shade800),
+                      Icon(
+                        Icons.flash_on_rounded,
+                        color: Colors.orange.shade800,
+                      ),
                       const SizedBox(width: 12),
                       Text(
                         'Lightning Wallet',
@@ -607,9 +627,9 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-        
+
         SizedBox(height: 32),
-        
+
         // Footer - Diseño similar al login
         Container(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
@@ -631,7 +651,9 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(width: 6),
               GestureDetector(
-                onTap: _isLoading ? null : () => Navigator.pushReplacementNamed(context, '/login'),
+                onTap: _isLoading
+                    ? null
+                    : () => Navigator.pushReplacementNamed(context, '/login'),
                 child: Text(
                   'Iniciar sesión',
                   style: TextStyle(
@@ -692,7 +714,10 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         filled: true,
         fillColor: Colors.grey.shade50,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: isPortrait ? 20 : 18),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: isPortrait ? 20 : 18,
+        ),
       ),
       validator: validator,
     );
@@ -722,13 +747,19 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         prefixIcon: Container(
           margin: const EdgeInsets.all(12),
-          child: const Icon(Icons.lock_rounded, color: Colors.blueAccent, size: 22),
+          child: const Icon(
+            Icons.lock_rounded,
+            color: Colors.blueAccent,
+            size: 22,
+          ),
         ),
         suffixIcon: Container(
           margin: const EdgeInsets.all(8),
           child: IconButton(
             icon: Icon(
-              obscureText ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+              obscureText
+                  ? Icons.visibility_off_rounded
+                  : Icons.visibility_rounded,
               color: Colors.grey.shade600,
               size: 22,
             ),
@@ -749,7 +780,10 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         filled: true,
         fillColor: Colors.grey.shade50,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: isPortrait ? 20 : 18),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: isPortrait ? 20 : 18,
+        ),
       ),
       validator: validator,
     );

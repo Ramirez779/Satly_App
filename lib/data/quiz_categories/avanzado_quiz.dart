@@ -11,7 +11,8 @@ class AvanzadoQuiz {
     'reward': '30 SATS',
     'gradient': [Colors.purpleAccent, Colors.deepPurpleAccent],
     'difficulty': '★★★',
-    'quizzes': [ // ← AQUÍ VAN LOS 2 QUIZZES
+    'quizzes': [
+      // ← AQUÍ VAN LOS 2 QUIZZES
       // QUIZ 1 - EL QUE YA TENÍAS
       {
         'id': 'avanzado1',
@@ -27,7 +28,8 @@ class AvanzadoQuiz {
               'Secure Wallet - tipo de cartera',
             ],
             'correct': 0,
-            'explanation': 'SegWit separa la firma digital de los datos de transacción para aumentar capacidad.',
+            'explanation':
+                'SegWit separa la firma digital de los datos de transacción para aumentar capacidad.',
           },
           {
             'question': '¿Qué es Taproot?',
@@ -38,7 +40,8 @@ class AvanzadoQuiz {
               'Protocolo de exchange',
             ],
             'correct': 0,
-            'explanation': 'Taproot mejora la privacidad de las transacciones complejas como los Lightning Channels.',
+            'explanation':
+                'Taproot mejora la privacidad de las transacciones complejas como los Lightning Channels.',
           },
           {
             'question': '¿Qué es el Lightning Network?',
@@ -49,7 +52,8 @@ class AvanzadoQuiz {
               'Tipo de wallet hardware',
             ],
             'correct': 0,
-            'explanation': 'Lightning Network permite transacciones instantáneas y de bajo costo.',
+            'explanation':
+                'Lightning Network permite transacciones instantáneas y de bajo costo.',
           },
           {
             'question': '¿Qué son las multisig?',
@@ -60,7 +64,8 @@ class AvanzadoQuiz {
               'Múltiples wallets en un dispositivo',
             ],
             'correct': 0,
-            'explanation': 'Multisig requiere múltiples claves privadas para autorizar una transacción, mejorando seguridad.',
+            'explanation':
+                'Multisig requiere múltiples claves privadas para autorizar una transacción, mejorando seguridad.',
           },
         ],
       },
@@ -79,7 +84,8 @@ class AvanzadoQuiz {
               'Un lenguaje para crear wallets',
             ],
             'correct': 0,
-            'explanation': 'Bitcoin Script es un lenguaje simple que define las condiciones para gastar bitcoins.',
+            'explanation':
+                'Bitcoin Script es un lenguaje simple que define las condiciones para gastar bitcoins.',
           },
           {
             'question': '¿Qué es un OP_CODE?',
@@ -90,7 +96,8 @@ class AvanzadoQuiz {
               'Un tipo de dirección Bitcoin',
             ],
             'correct': 0,
-            'explanation': 'Los OP_CODES son operaciones que definen la lógica de las transacciones Bitcoin.',
+            'explanation':
+                'Los OP_CODES son operaciones que definen la lógica de las transacciones Bitcoin.',
           },
           {
             'question': '¿Qué es el replace-by-fee (RBF)?',
@@ -101,7 +108,8 @@ class AvanzadoQuiz {
               'Un protocolo de minería',
             ],
             'correct': 0,
-            'explanation': 'RBF permite reemplazar una transacción no confirmada con una que paga mayor comisión.',
+            'explanation':
+                'RBF permite reemplazar una transacción no confirmada con una que paga mayor comisión.',
           },
           {
             'question': '¿Qué son las transacciones CoinJoin?',
@@ -112,10 +120,11 @@ class AvanzadoQuiz {
               'Transacciones de minería conjunta',
             ],
             'correct': 0,
-            'explanation': 'CoinJoin mejora la privacidad mezclando transacciones de múltiples usuarios.',
+            'explanation':
+                'CoinJoin mejora la privacidad mezclando transacciones de múltiples usuarios.',
           },
         ],
-      }
+      },
     ],
   };
 }

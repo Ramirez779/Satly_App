@@ -4,11 +4,7 @@ class ProgressBar extends StatelessWidget {
   final double progress; // 0.0 a 1.0
   final String label;
 
-  const ProgressBar({
-    super.key,
-    required this.progress,
-    required this.label,
-  });
+  const ProgressBar({super.key, required this.progress, required this.label});
 
   @override
   Widget build(BuildContext context) {

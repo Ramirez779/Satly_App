@@ -22,23 +22,11 @@ class QuizPage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            const Text(
-              "¿Cuánto es 2 + 2?",
-              style: TextStyle(fontSize: 18),
-            ),
+            const Text("¿Cuánto es 2 + 2?", style: TextStyle(fontSize: 18)),
             const SizedBox(height: 20),
-            CustomButton(
-              text: "3",
-              onPressed: () {},
-            ),
-            CustomButton(
-              text: "4",
-              onPressed: () {},
-            ),
-            CustomButton(
-              text: "5",
-              onPressed: () {},
-            ),
+            CustomButton(text: "3", onPressed: () {}),
+            CustomButton(text: "4", onPressed: () {}),
+            CustomButton(text: "5", onPressed: () {}),
           ],
         ),
       ),

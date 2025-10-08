@@ -99,14 +99,15 @@ class WelcomePage extends StatelessWidget {
                           Column(
                             children: [
                               ShaderMask(
-                                shaderCallback: (bounds) => const LinearGradient(
-                                  colors: [
-                                    Color(0xFF0066FF),
-                                    Color(0xFF00BFFF),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ).createShader(bounds),
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                      colors: [
+                                        Color(0xFF0066FF),
+                                        Color(0xFF00BFFF),
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ).createShader(bounds),
                                 child: Text(
                                   "EduSats",
                                   textAlign: TextAlign.center,
@@ -119,9 +120,9 @@ class WelcomePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              
+
                               const SizedBox(height: 12),
-                              
+
                               // Subtítulo
                               Text(
                                 "Aprende • Gana • Domina",
@@ -143,9 +144,7 @@ class WelcomePage extends StatelessWidget {
                             duration: const Duration(milliseconds: 400),
                             child: Text(
                               "⚡ 🎓 💰",
-                              style: TextStyle(
-                                fontSize: baseFont + 4,
-                              ),
+                              style: TextStyle(fontSize: baseFont + 4),
                             ),
                           ),
 
@@ -194,9 +193,9 @@ class WelcomePage extends StatelessWidget {
                               height: isPortrait ? 60 : 54,
                             ),
                           ),
-                          
+
                           const SizedBox(height: 20),
-                          
+
                           // Botón secundario con borde
                           Container(
                             decoration: BoxDecoration(

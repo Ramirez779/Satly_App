@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isEnabled = onPressed != null && !isLoading;
-    
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       width: width ?? double.infinity,
@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
                 end: Alignment.bottomRight,
               )
             : null,
-        color: isPrimary 
+        color: isPrimary
             ? (!isEnabled ? Colors.grey : backgroundColor ?? Colors.blueAccent)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
@@ -50,10 +50,12 @@ class CustomButton extends StatelessWidget {
                 ),
               ]
             : null,
-        border: isPrimary ? null : Border.all(
-          color: !isEnabled ? Colors.grey : Colors.blueAccent,
-          width: 2,
-        ),
+        border: isPrimary
+            ? null
+            : Border.all(
+                color: !isEnabled ? Colors.grey : Colors.blueAccent,
+                width: 2,
+              ),
       ),
       child: Material(
         color: Colors.transparent,
@@ -87,7 +89,7 @@ class CustomButton extends StatelessWidget {
                       color: _getTextColor(isEnabled),
                     ),
                   ),
-                
+
                 if (!isLoading && isEnabled) ...[
                   const SizedBox(width: 8),
                   Icon(
