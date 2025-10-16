@@ -20,7 +20,6 @@ class WelcomePage extends StatelessWidget {
                 constraints.maxWidth >= 600 && constraints.maxWidth < 1000;
             final isDesktop = constraints.maxWidth >= 1000;
 
-            // Escala adaptable según dispositivo
             double baseFont = isDesktop ? 24 : (isTablet ? 20 : 18);
             double titleFont = isDesktop ? 62 : (isTablet ? 48 : 40);
             double logoSize = isDesktop ? 180 : (isTablet ? 140 : 110);
@@ -28,16 +27,16 @@ class WelcomePage extends StatelessWidget {
             return Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.white,
-                    Colors.blue.shade50,
-                    Colors.blue.shade100,
+                    Color(0xFFF8FBFF),
+                    Color(0xFFE3F2FD),
+                    Color(0xFFD6E4FF),
                   ],
-                  stops: const [0.0, 0.6, 1.0],
+                  stops: [0.0, 0.5, 1.0],
                 ),
               ),
               child: SingleChildScrollView(
@@ -50,23 +49,22 @@ class WelcomePage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Espacio superior
-                      SizedBox(height: isPortrait ? 60 : 30),
+                      SizedBox(height: isPortrait ? size.height * 0.07 : 30),
 
-                      // Contenido principal
+                      /// Contenido principal
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Logo con mejor efecto visual
+                          // Logo con mejor estilo visual
                           Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.4),
-                                  blurRadius: 30,
-                                  spreadRadius: 5,
-                                  offset: const Offset(0, 15),
+                                  color: Colors.blue.withOpacity(0.25),
+                                  blurRadius: 25,
+                                  spreadRadius: 2,
+                                  offset: const Offset(0, 10),
                                 ),
                               ],
                             ),
@@ -74,11 +72,11 @@ class WelcomePage extends StatelessWidget {
                               duration: const Duration(milliseconds: 600),
                               width: logoSize,
                               height: logoSize,
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFF0066FF),
-                                    Color(0xFF00BFFF),
+                                    Color(0xFF007BFF),
+                                    Color(0xFF00C2FF),
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -95,15 +93,15 @@ class WelcomePage extends StatelessWidget {
 
                           SizedBox(height: isPortrait ? 40 : 30),
 
-                          // Título con mejor jerarquía
+                          // Título con degradado sutil
                           Column(
                             children: [
                               ShaderMask(
                                 shaderCallback: (bounds) =>
                                     const LinearGradient(
                                       colors: [
-                                        Color(0xFF0066FF),
-                                        Color(0xFF00BFFF),
+                                        Color(0xFF007BFF),
+                                        Color(0xFF00A6FF),
                                       ],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
@@ -113,25 +111,25 @@ class WelcomePage extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: titleFont,
-                                    fontWeight: FontWeight.w900,
-                                    height: 1.0,
-                                    letterSpacing: -1.0,
+                                    fontWeight: FontWeight.w800,
+                                    height: 1.1,
+                                    letterSpacing: -0.5,
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
 
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
 
                               // Subtítulo
                               Text(
                                 "Aprende • Gana • Domina",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: baseFont * 0.8,
-                                  color: Colors.blue.shade700,
+                                  fontSize: baseFont * 0.85,
+                                  color: Colors.blueGrey.shade700,
                                   fontWeight: FontWeight.w600,
-                                  letterSpacing: 1.2,
+                                  letterSpacing: 1.1,
                                 ),
                               ),
                             ],
@@ -139,7 +137,7 @@ class WelcomePage extends StatelessWidget {
 
                           const SizedBox(height: 16),
 
-                          // Emojis decorativos con animación sutil
+                          // Emojis decorativos
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 400),
                             child: Text(
@@ -150,7 +148,7 @@ class WelcomePage extends StatelessWidget {
 
                           SizedBox(height: isPortrait ? 32 : 24),
 
-                          // Descripción con mejor tipografía
+                          // Descripción más legible
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Text(
@@ -158,30 +156,30 @@ class WelcomePage extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: baseFont,
-                                color: Colors.grey.shade800,
+                                color: Colors.grey.shade700,
                                 fontWeight: FontWeight.w400,
-                                height: 1.5,
-                                letterSpacing: 0.3,
+                                height: 1.6,
+                                letterSpacing: 0.4,
                               ),
                             ),
                           ),
                         ],
                       ),
 
-                      SizedBox(height: isPortrait ? 80 : 50),
+                      SizedBox(height: isPortrait ? size.height * 0.1 : 50),
 
-                      // Botones con mejor diseño
+                      // Botones
                       Column(
                         children: [
-                          // Botón principal con sombra
+                          // Botón principal
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.3),
-                                  blurRadius: 20,
-                                  offset: const Offset(0, 8),
+                                  color: Colors.blue.withOpacity(0.25),
+                                  blurRadius: 18,
+                                  offset: const Offset(0, 6),
                                 ),
                               ],
                             ),
@@ -196,13 +194,13 @@ class WelcomePage extends StatelessWidget {
 
                           const SizedBox(height: 20),
 
-                          // Botón secundario con borde
+                          // Botón secundario
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: Colors.blueAccent,
-                                width: 2,
+                                color: Colors.blue.shade400,
+                                width: 1.8,
                               ),
                             ),
                             child: ClipRRect(
@@ -219,7 +217,7 @@ class WelcomePage extends StatelessWidget {
                         ],
                       ),
 
-                      SizedBox(height: isPortrait ? 50 : 30),
+                      SizedBox(height: isPortrait ? size.height * 0.08 : 30),
                     ],
                   ),
                 ),

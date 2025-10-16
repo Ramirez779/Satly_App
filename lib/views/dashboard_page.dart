@@ -412,7 +412,7 @@ class _MetricCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Padding(
+        child: Padding(
         padding: EdgeInsets.all(isMobile ? 16 : (isTablet ? 12 : 16)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
