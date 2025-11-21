@@ -107,7 +107,7 @@ class WelcomePage extends StatelessWidget {
                                       end: Alignment.centerRight,
                                     ).createShader(bounds),
                                 child: Text(
-                                  "EduSats",
+                                  "Satly",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: titleFont,
