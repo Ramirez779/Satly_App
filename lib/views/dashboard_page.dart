@@ -86,6 +86,14 @@ class DashboardPage extends StatelessWidget {
                       : 24,
                 ),
 
+                SizedBox(
+                  height: isMobile
+                      ? 24
+                      : isTablet
+                      ? 20
+                      : 24,
+                ),
+
                 // Métricas clave
                 _KeyMetrics(
                   userData: userData,
@@ -412,7 +420,7 @@ class _MetricCard extends StatelessWidget {
           ),
         ],
       ),
-        child: Padding(
+      child: Padding(
         padding: EdgeInsets.all(isMobile ? 16 : (isTablet ? 12 : 16)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

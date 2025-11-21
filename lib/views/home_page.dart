@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dashboard_page.dart';
 import 'quiz_page.dart';
 import 'profile_page.dart';
+import 'wallet_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,12 +15,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [DashboardPage(), QuizPage(), ProfilePage()];
+  final List<Widget> _pages = [DashboardPage(), QuizPage(), WalletPage(), ProfilePage()];
 
-  final List<String> _pageTitles = ['Dashboard', 'Quizzes', 'Perfil'];
+  final List<String> _pageTitles = ['Dashboard', 'Quizzes',"Wallet", 'Perfil']; //Asi aparecen en la interfaz
   final List<IconData> _pageIcons = [
     Icons.dashboard_rounded,
     Icons.quiz_rounded,
+    Icons.account_balance_wallet_rounded,
     Icons.person_rounded,
   ];
 

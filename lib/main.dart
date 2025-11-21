@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'utils/colors.dart';
 import 'views/welcome_page.dart';
 import 'views/login_page.dart';
 import 'views/register_page.dart';
@@ -6,6 +7,10 @@ import 'views/home_page.dart' as home_view;
 import 'views/quiz_page.dart' as quiz_view;
 import 'views/dashboard_page.dart' as dashboard_view;
 import 'views/profile_page.dart' as profile_view;
+import 'views/wallet_page.dart' as wallet_view;
+import 'views/wallet_receive_page.dart' as wallet_receive_view;
+import 'views/wallet_withdraw_page.dart' as wallet_withdraw_view;
+import 'views/wallet_history_page.dart' as wallet_history_view;
 
 // Colores personalizados
 class AppColors {
@@ -66,6 +71,11 @@ class MyApp extends StatelessWidget {
         '/quiz': (context) => const quiz_view.QuizPage(),
         '/dashboard': (context) => const dashboard_view.DashboardPage(),
         '/profile': (context) => const profile_view.ProfilePage(),
+
+        '/wallet': (context) => const wallet_view.WalletPage(),
+        '/wallet/receive': (context) => const wallet_receive_view.WalletReceivePage(),
+        '/wallet/withdraw': (context) => const wallet_withdraw_view.WalletWithdrawPage(),
+        '/wallet/history': (context) => const wallet_history_view.WalletHistoryPage(),
       },
     );
   }

@@ -172,13 +172,13 @@ class _QuizPageState extends State<QuizPage> {
                   horizontal: isMobile
                       ? 16.0
                       : isTablet
-                      ? 24.0
-                      : 32.0,
+                          ? 24.0
+                          : 32.0,
                   vertical: isMobile
                       ? 8.0
                       : isTablet
-                      ? 16.0
-                      : 20.0,
+                          ? 16.0
+                          : 20.0,
                 ),
                 child: _buildContent(
                   isMobile,
@@ -224,13 +224,13 @@ class _QuizPageState extends State<QuizPage> {
     final double titleSize = isMobile
         ? 32
         : isTablet
-        ? 28
-        : 36;
+            ? 28
+            : 36;
     final double subtitleSize = isMobile
         ? 16
         : isTablet
-        ? 14
-        : 18;
+            ? 14
+            : 18;
     final int crossAxisCount = isMobile ? 2 : (isTablet ? 3 : 4);
     final double aspectRatio = isMobile ? 0.9 : (isTablet ? 0.8 : 0.7);
 
@@ -241,8 +241,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 20
               : isTablet
-              ? 10
-              : 20,
+                  ? 10
+                  : 20,
         ),
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(
@@ -265,8 +265,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 8
               : isTablet
-              ? 4
-              : 8,
+                  ? 4
+                  : 8,
         ),
         Text(
           'Completa quizzes y gana recompensas en SATS',
@@ -280,10 +280,9 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 24
               : isTablet
-              ? 16
-              : 24,
+                  ? 16
+                  : 24,
         ),
-
         Expanded(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -291,13 +290,13 @@ class _QuizPageState extends State<QuizPage> {
               crossAxisSpacing: isMobile
                   ? 16
                   : isTablet
-                  ? 20
-                  : 24,
+                      ? 20
+                      : 24,
               mainAxisSpacing: isMobile
                   ? 16
                   : isTablet
-                  ? 20
-                  : 24,
+                      ? 20
+                      : 24,
               childAspectRatio: aspectRatio,
             ),
             itemCount: _categories.length,
@@ -356,8 +355,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 16
               : isTablet
-              ? 12
-              : 16,
+                  ? 12
+                  : 16,
         ),
         Text(
           'Selecciona uno de los quizzes disponibles:',
@@ -365,8 +364,8 @@ class _QuizPageState extends State<QuizPage> {
             fontSize: isMobile
                 ? 16
                 : isTablet
-                ? 14
-                : 18,
+                    ? 14
+                    : 18,
             color: const Color(0xFF757575),
           ),
         ),
@@ -374,8 +373,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 20
               : isTablet
-              ? 16
-              : 24,
+                  ? 16
+                  : 24,
         ),
 
         // Lista de quizzes
@@ -386,8 +385,8 @@ class _QuizPageState extends State<QuizPage> {
               height: isMobile
                   ? 16
                   : isTablet
-                  ? 12
-                  : 16,
+                      ? 12
+                      : 16,
             ),
             itemBuilder: (context, index) {
               final quiz = _availableQuizzes[index];
@@ -449,7 +448,7 @@ class _QuizPageState extends State<QuizPage> {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     quiz['description'] as String,
                     style: TextStyle(
@@ -458,7 +457,7 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                     maxLines: 2,
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       Container(
@@ -476,14 +475,14 @@ class _QuizPageState extends State<QuizPage> {
                             fontSize: isMobile
                                 ? 12
                                 : isTablet
-                                ? 11
-                                : 14,
+                                    ? 11
+                                    : 14,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Icon(
                         Icons.arrow_forward_rounded,
                         color: Colors.white,
@@ -551,8 +550,8 @@ class _QuizPageState extends State<QuizPage> {
                     height: isMobile
                         ? 12
                         : isTablet
-                        ? 8
-                        : 12,
+                            ? 8
+                            : 12,
                   ),
                   Text(
                     category['name'] as String,
@@ -576,14 +575,14 @@ class _QuizPageState extends State<QuizPage> {
                     height: isMobile
                         ? 8
                         : isTablet
-                        ? 4
-                        : 8,
+                            ? 4
+                            : 8,
                   ),
                   Text(
                     category['description'] as String,
-                    style: TextStyle(
-                      fontSize: descSize,
-                      color: const Color(0xE6FFFFFF),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xE6FFFFFF),
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
@@ -592,8 +591,8 @@ class _QuizPageState extends State<QuizPage> {
                     height: isMobile
                         ? 8
                         : isTablet
-                        ? 4
-                        : 8,
+                            ? 4
+                            : 8,
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -610,8 +609,8 @@ class _QuizPageState extends State<QuizPage> {
                         fontSize: isMobile
                             ? 14
                             : isTablet
-                            ? 12
-                            : 16,
+                                ? 12
+                                : 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
@@ -643,8 +642,8 @@ class _QuizPageState extends State<QuizPage> {
             vertical: isMobile
                 ? 8
                 : isTablet
-                ? 4
-                : 8,
+                    ? 4
+                    : 8,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -657,8 +656,8 @@ class _QuizPageState extends State<QuizPage> {
                       size: isMobile
                           ? 24
                           : isTablet
-                          ? 20
-                          : 28,
+                              ? 20
+                              : 28,
                     ),
                     onPressed: _backToQuizSelection,
                     color: Colors.blueAccent,
@@ -676,8 +675,8 @@ class _QuizPageState extends State<QuizPage> {
                           fontSize: isMobile
                               ? 20
                               : isTablet
-                              ? 18
-                              : 24,
+                                  ? 18
+                                  : 24,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                         ),
@@ -702,8 +701,8 @@ class _QuizPageState extends State<QuizPage> {
                         fontSize: isMobile
                             ? 14
                             : isTablet
-                            ? 12
-                            : 16,
+                                ? 12
+                                : 16,
                         fontWeight: FontWeight.w600,
                         color: gradientColors[0],
                       ),
@@ -715,16 +714,16 @@ class _QuizPageState extends State<QuizPage> {
                 height: isMobile
                     ? 12
                     : isTablet
-                    ? 8
-                    : 12,
+                        ? 8
+                        : 12,
               ),
               // Barra de progreso
               Container(
                 height: isMobile
                     ? 8
                     : isTablet
-                    ? 6
-                    : 10,
+                        ? 6
+                        : 10,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
                   color: const Color(0xFFE0E0E0),
@@ -750,8 +749,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 24
               : isTablet
-              ? 16
-              : 24,
+                  ? 16
+                  : 24,
         ),
 
         // Indicador de pregunta
@@ -761,8 +760,8 @@ class _QuizPageState extends State<QuizPage> {
             fontSize: isMobile
                 ? 16
                 : isTablet
-                ? 14
-                : 18,
+                    ? 14
+                    : 18,
             color: const Color(0xFF757575),
             fontWeight: FontWeight.w500,
           ),
@@ -772,8 +771,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 16
               : isTablet
-              ? 12
-              : 16,
+                  ? 12
+                  : 16,
         ),
 
         // Pregunta
@@ -785,8 +784,8 @@ class _QuizPageState extends State<QuizPage> {
               isMobile
                   ? 20
                   : isTablet
-                  ? 16
-                  : 24,
+                      ? 16
+                      : 24,
             ),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -808,8 +807,8 @@ class _QuizPageState extends State<QuizPage> {
                     fontSize: isMobile
                         ? 22
                         : isTablet
-                        ? 18
-                        : 24,
+                            ? 18
+                            : 24,
                     fontWeight: FontWeight.w700,
                     color: Colors.black87,
                     height: 1.3,
@@ -825,8 +824,8 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 24
               : isTablet
-              ? 16
-              : 24,
+                  ? 16
+                  : 24,
         ),
 
         // Opciones de respuesta
@@ -838,8 +837,8 @@ class _QuizPageState extends State<QuizPage> {
               height: isMobile
                   ? 12
                   : isTablet
-                  ? 8
-                  : 12,
+                      ? 8
+                      : 12,
             ),
             itemBuilder: (context, index) {
               final answer = (_currentQuestion['answers'] as List)[index];
@@ -866,8 +865,8 @@ class _QuizPageState extends State<QuizPage> {
             height: isMobile
                 ? 16
                 : isTablet
-                ? 12
-                : 16,
+                    ? 12
+                    : 16,
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 500),
@@ -875,8 +874,8 @@ class _QuizPageState extends State<QuizPage> {
               isMobile
                   ? 16
                   : isTablet
-                  ? 12
-                  : 16,
+                      ? 12
+                      : 16,
             ),
             decoration: BoxDecoration(
               color: isCorrect
@@ -902,33 +901,33 @@ class _QuizPageState extends State<QuizPage> {
                       size: isMobile
                           ? 20
                           : isTablet
-                          ? 18
-                          : 22,
+                              ? 18
+                              : 22,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       isCorrect ? '¡Correcto!' : 'Explicación:',
                       style: TextStyle(
                         fontSize: isMobile
                             ? 16
                             : isTablet
-                            ? 14
-                            : 18,
+                                ? 14
+                                : 18,
                         fontWeight: FontWeight.w600,
                         color: isCorrect ? Colors.green : Colors.blueAccent,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   _currentQuestion['explanation'] as String,
                   style: TextStyle(
                     fontSize: isMobile
                         ? 14
                         : isTablet
-                        ? 13
-                        : 16,
+                            ? 13
+                            : 16,
                     color: Colors.black87,
                     height: 1.4,
                   ),
@@ -940,8 +939,8 @@ class _QuizPageState extends State<QuizPage> {
             height: isMobile
                 ? 16
                 : isTablet
-                ? 12
-                : 16,
+                    ? 12
+                    : 16,
           ),
           CustomButton(
             text: _currentQuestionIndex < _currentQuestions.length - 1
@@ -952,8 +951,8 @@ class _QuizPageState extends State<QuizPage> {
             height: isMobile
                 ? 56
                 : isTablet
-                ? 52
-                : 60,
+                    ? 52
+                    : 60,
           ),
         ],
       ],
@@ -1017,10 +1016,10 @@ class _QuizPageState extends State<QuizPage> {
                   child: Icon(
                     _answerSubmitted
                         ? (answerIsCorrect
-                              ? Icons.check_rounded
-                              : answerIsSelected
-                              ? Icons.close_rounded
-                              : Icons.circle_outlined)
+                            ? Icons.check_rounded
+                            : answerIsSelected
+                                ? Icons.close_rounded
+                                : Icons.circle_outlined)
                         : Icons.circle_outlined,
                     size: iconSize * 0.6,
                     color: _answerSubmitted ? Colors.white : gradientColors[0],
@@ -1030,8 +1029,8 @@ class _QuizPageState extends State<QuizPage> {
                   width: isMobile
                       ? 16
                       : isTablet
-                      ? 12
-                      : 20,
+                          ? 12
+                          : 20,
                 ),
                 Expanded(
                   child: Text(
@@ -1040,11 +1039,10 @@ class _QuizPageState extends State<QuizPage> {
                       fontSize: isMobile
                           ? 16
                           : isTablet
-                          ? 14
-                          : 18,
+                              ? 14
+                              : 18,
                       fontWeight: FontWeight.w500,
-                      color:
-                          _answerSubmitted &&
+                      color: _answerSubmitted &&
                               (answerIsCorrect || answerIsSelected)
                           ? Colors.white
                           : Colors.black87,
@@ -1076,8 +1074,8 @@ class _QuizPageState extends State<QuizPage> {
           vertical: isMobile
               ? 20
               : isTablet
-              ? 10
-              : 40,
+                  ? 10
+                  : 40,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1106,15 +1104,13 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.white,
               ),
             ),
-
             SizedBox(
               height: isMobile
                   ? 32
                   : isTablet
-                  ? 24
-                  : 32,
+                      ? 24
+                      : 32,
             ),
-
             ShaderMask(
               shaderCallback: (bounds) => LinearGradient(
                 colors: gradientColors,
@@ -1131,22 +1127,20 @@ class _QuizPageState extends State<QuizPage> {
                 textAlign: TextAlign.center,
               ),
             ),
-
             SizedBox(
               height: isMobile
                   ? 16
                   : isTablet
-                  ? 12
-                  : 16,
+                      ? 12
+                      : 16,
             ),
-
             Container(
               padding: EdgeInsets.all(
                 isMobile
                     ? 20
                     : isTablet
-                    ? 16
-                    : 24,
+                        ? 16
+                        : 24,
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -1167,8 +1161,8 @@ class _QuizPageState extends State<QuizPage> {
                       fontSize: isMobile
                           ? 18
                           : isTablet
-                          ? 16
-                          : 20,
+                              ? 16
+                              : 20,
                       fontWeight: FontWeight.w600,
                       color: gradientColors[0],
                     ),
@@ -1177,8 +1171,8 @@ class _QuizPageState extends State<QuizPage> {
                     height: isMobile
                         ? 8
                         : isTablet
-                        ? 6
-                        : 8,
+                            ? 6
+                            : 8,
                   ),
                   Text(
                     '$_score/${_currentQuestions.length} Preguntas',
@@ -1192,8 +1186,8 @@ class _QuizPageState extends State<QuizPage> {
                     height: isMobile
                         ? 8
                         : isTablet
-                        ? 4
-                        : 8,
+                            ? 4
+                            : 8,
                   ),
                   Text(
                     '$percentage% de aciertos',
@@ -1201,31 +1195,29 @@ class _QuizPageState extends State<QuizPage> {
                       fontSize: isMobile
                           ? 16
                           : isTablet
-                          ? 14
-                          : 18,
+                              ? 14
+                              : 18,
                       color: const Color(0xFF757575),
                     ),
                   ),
                 ],
               ),
             ),
-
             SizedBox(
               height: isMobile
                   ? 24
                   : isTablet
-                  ? 16
-                  : 24,
+                      ? 16
+                      : 24,
             ),
-
             if (hasPassed) ...[
               Container(
                 padding: EdgeInsets.all(
                   isMobile
                       ? 16
                       : isTablet
-                      ? 12
-                      : 16,
+                          ? 12
+                          : 16,
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0x1A4CAF50),
@@ -1241,18 +1233,18 @@ class _QuizPageState extends State<QuizPage> {
                       size: isMobile
                           ? 24
                           : isTablet
-                          ? 20
-                          : 28,
+                              ? 20
+                              : 28,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       '¡Has ganado ${category['reward']}!',
                       style: TextStyle(
                         fontSize: isMobile
                             ? 18
                             : isTablet
-                            ? 16
-                            : 22,
+                                ? 16
+                                : 22,
                         fontWeight: FontWeight.w600,
                         color: Colors.green[800]!,
                       ),
@@ -1264,8 +1256,8 @@ class _QuizPageState extends State<QuizPage> {
                 height: isMobile
                     ? 8
                     : isTablet
-                    ? 4
-                    : 8,
+                        ? 4
+                        : 8,
               ),
               Text(
                 'Los SATS han sido añadidos a tu wallet',
@@ -1273,8 +1265,8 @@ class _QuizPageState extends State<QuizPage> {
                   fontSize: isMobile
                       ? 14
                       : isTablet
-                      ? 12
-                      : 16,
+                          ? 12
+                          : 16,
                   color: const Color(0xFF757575),
                 ),
               ),
@@ -1285,34 +1277,31 @@ class _QuizPageState extends State<QuizPage> {
                   fontSize: isMobile
                       ? 14
                       : isTablet
-                      ? 12
-                      : 16,
+                          ? 12
+                          : 16,
                   color: const Color(0xFF757575),
                 ),
                 textAlign: TextAlign.center,
               ),
             ],
-
             SizedBox(
               height: isMobile
                   ? 32
                   : isTablet
-                  ? 24
-                  : 32,
+                      ? 24
+                      : 32,
             ),
-
             // Botones responsivos
             if (isMobile || isTablet)
               _buildVerticalButtons(isMobile, isTablet, hasPassed)
             else
               _buildHorizontalButtons(hasPassed),
-
             SizedBox(
               height: isMobile
                   ? 20
                   : isTablet
-                  ? 16
-                  : 24,
+                      ? 16
+                      : 24,
             ),
           ],
         ),
@@ -1320,9 +1309,34 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
+  /// Botones en columna (mobile / tablet)
   Widget _buildVerticalButtons(bool isMobile, bool isTablet, bool hasPassed) {
     return Column(
       children: [
+        // Si SÍ pasó el quiz, primero botón para ver la wallet
+        if (hasPassed) ...[
+          CustomButton(
+            text: 'Ver mi Wallet',
+            onPressed: () {
+              Navigator.pushNamed(context, '/wallet');
+            },
+            isPrimary: true,
+            height: isMobile
+                ? 56
+                : isTablet
+                    ? 52
+                    : 60,
+          ),
+          SizedBox(
+            height: isMobile
+                ? 12
+                : isTablet
+                    ? 10
+                    : 12,
+          ),
+        ],
+
+        // Si NO pasó, mostrar botón de reintentar
         if (!hasPassed) ...[
           CustomButton(
             text: 'Reintentar Quiz',
@@ -1331,34 +1345,39 @@ class _QuizPageState extends State<QuizPage> {
             height: isMobile
                 ? 56
                 : isTablet
-                ? 52
-                : 60,
+                    ? 52
+                    : 60,
           ),
           SizedBox(
             height: isMobile
                 ? 12
                 : isTablet
-                ? 10
-                : 12,
+                    ? 10
+                    : 12,
           ),
         ],
+
+        // Elegir otro quiz
         CustomButton(
           text: 'Elegir Otro Quiz',
           onPressed: _backToQuizSelection,
+          // Primario solo cuando no ganó reward
           isPrimary: !hasPassed,
           height: isMobile
               ? 56
               : isTablet
-              ? 52
-              : 60,
+                  ? 52
+                  : 60,
         ),
         SizedBox(
           height: isMobile
               ? 12
               : isTablet
-              ? 10
-              : 12,
+                  ? 10
+                  : 12,
         ),
+
+        // Volver al Home
         CustomButton(
           text: 'Volver al Home',
           onPressed: _goHome,
@@ -1366,17 +1385,19 @@ class _QuizPageState extends State<QuizPage> {
           height: isMobile
               ? 56
               : isTablet
-              ? 52
-              : 60,
+                  ? 52
+                  : 60,
         ),
       ],
     );
   }
 
+  /// Botones en fila (desktop)
   Widget _buildHorizontalButtons(bool hasPassed) {
-    return Row(
-      children: [
-        if (!hasPassed) ...[
+    // Versión cuando NO ganó sats
+    if (!hasPassed) {
+      return Row(
+        children: [
           Expanded(
             child: CustomButton(
               text: 'Reintentar Quiz',
@@ -1385,17 +1406,51 @@ class _QuizPageState extends State<QuizPage> {
               height: 60,
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
+          Expanded(
+            child: CustomButton(
+              text: 'Elegir Otro Quiz',
+              onPressed: _backToQuizSelection,
+              isPrimary: false,
+              height: 60,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: CustomButton(
+              text: 'Volver al Home',
+              onPressed: _goHome,
+              isPrimary: false,
+              height: 60,
+            ),
+          ),
         ],
+      );
+    }
+
+    // Versión cuando SÍ ganó sats: incluye "Ver mi Wallet"
+    return Row(
+      children: [
         Expanded(
           child: CustomButton(
             text: 'Elegir Otro Quiz',
             onPressed: _backToQuizSelection,
-            isPrimary: !hasPassed,
+            isPrimary: false,
             height: 60,
           ),
         ),
-        SizedBox(width: 16),
+        const SizedBox(width: 16),
+        Expanded(
+          child: CustomButton(
+            text: 'Ver mi Wallet',
+            onPressed: () {
+              Navigator.pushNamed(context, '/wallet');
+            },
+            isPrimary: true,
+            height: 60,
+          ),
+        ),
+        const SizedBox(width: 16),
         Expanded(
           child: CustomButton(
             text: 'Volver al Home',
