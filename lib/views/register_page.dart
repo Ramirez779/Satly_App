@@ -453,16 +453,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         SizedBox(height: 8),
 
-        Text(
-          'Únete a la comunidad SparkSeed',
-          style: TextStyle(
-            fontSize: isPortrait ? 17 : 15,
-            color: Colors.grey.shade700,
-            fontWeight: FontWeight.w500,
-            letterSpacing: -0.2,
-          ),
-          textAlign: TextAlign.center,
-        ),
         SizedBox(height: isPortrait ? 20 : 16),
       ],
     );

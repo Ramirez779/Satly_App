@@ -34,7 +34,7 @@ class DashboardPage extends StatelessWidget {
 
   // Datos de ejemplo
   final UserData userData = const UserData(
-    userName: "Usuario EduSats",
+    userName: "Usuario",
     userLevel: 1,
     totalSats: 0,
     quizzesCompletados: 0,

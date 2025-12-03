@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import '../utils/colors.dart';
 
 class WalletPage extends StatefulWidget {
@@ -10,10 +11,14 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
-  int _walletBalance = 120; // 👈 saldo "de ejemplo", en sats
+  int _walletBalance = 120; // saldo "de ejemplo", en sats
   int _lifetimeEarned = 340; // sats ganados históricamente
 
-  // Historial "dummy" para UI
+  // 👇 Historial simple de balance para la gráfica (últimos 7 días)
+  final List<double> _balanceHistory = [40, 60, 80, 100, 90, 110, 120];
+  final List<String> _balanceLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+
+  // Historial "dummy" para UI (lista que ya tenías)
   final List<Map<String, dynamic>> _transactions = [
     {
       'type': 'earned',
@@ -35,6 +40,108 @@ class _WalletPageState extends State<WalletPage> {
     },
   ];
 
+  // 👇 CARD CON LA GRÁFICA
+  Widget _buildBalanceChartCard() {
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 18,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Evolución de tu saldo (últimos 7 días)',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Ve si tu saldo va creciendo o se mantiene igual.',
+            style: TextStyle(
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 170,
+            child: LineChart(
+              LineChartData(
+                minX: 0,
+                maxX: (_balanceHistory.length - 1).toDouble(),
+                // minY: 0, // opcional
+                gridData: FlGridData(show: false),
+                borderData: FlBorderData(show: false),
+                titlesData: FlTitlesData(
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 24,
+                      getTitlesWidget: (value, meta) {
+                        final index = value.toInt();
+                        if (index < 0 || index >= _balanceLabels.length) {
+                          return const SizedBox.shrink();
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            _balanceLabels[index],
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                lineBarsData: [
+                  LineChartBarData(
+                    isCurved: true,
+                    barWidth: 3,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(show: false),
+                    color: AppColors.primary,
+                    spots: List.generate(
+                      _balanceHistory.length,
+                      (i) => FlSpot(
+                        i.toDouble(),
+                        _balanceHistory[i],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +162,8 @@ class _WalletPageState extends State<WalletPage> {
                 filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
@@ -67,7 +175,8 @@ class _WalletPageState extends State<WalletPage> {
                       end: Alignment.bottomRight,
                       colors: [
                         AppColors.primary.withOpacity(0.9),
-                        const Color(0xFF64B5F6).withOpacity(0.9), // Usando uno de tus colores originales
+                        const Color(0xFF64B5F6)
+                            .withOpacity(0.9), // color original
                       ],
                     ),
                     boxShadow: const [
@@ -137,6 +246,9 @@ class _WalletPageState extends State<WalletPage> {
                 ),
               ),
             ),
+
+            // 👇 AQUÍ VA LA GRÁFICA
+            _buildBalanceChartCard(),
 
             const SizedBox(height: 24),
 
@@ -212,7 +324,8 @@ class _WalletPageState extends State<WalletPage> {
                 final int amount = tx['amount'] as int;
 
                 return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(14),
@@ -236,7 +349,9 @@ class _WalletPageState extends State<WalletPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(
-                          isEarned ? Icons.bolt_rounded : Icons.call_made_rounded,
+                          isEarned
+                              ? Icons.bolt_rounded
+                              : Icons.call_made_rounded,
                           color: isEarned ? Colors.green[700] : Colors.red[700],
                           size: 20,
                         ),

@@ -13,8 +13,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String userName = "Usuario EduSats";
-  String userEmail = "usuario@edusats.com";
+  String userName = "Usuario Satly";
+  String userEmail = "user@gmail.com";
   int userLevel = 1;
   int totalSats = 0;
   int quizzesCompletados = 8;
