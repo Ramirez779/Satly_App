@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'utils/colors.dart';
+import 'utils/typography.dart';
 import 'views/welcome_page.dart';
 import 'views/login_page.dart';
 import 'views/register_page.dart';
@@ -12,15 +13,6 @@ import 'views/wallet_receive_page.dart' as wallet_receive_view;
 import 'views/wallet_withdraw_page.dart' as wallet_withdraw_view;
 import 'views/wallet_history_page.dart' as wallet_history_view;
 
-// Colores personalizados
-class AppColors {
-  static const Color primary = Colors.blue;
-  static const Color primaryAccent = Colors.blueAccent;
-  static const Color background = Colors.white;
-  static const Color textPrimary = Colors.black87;
-  static const Color textSecondary = Colors.black54;
-}
-
 void main() {
   runApp(const MyApp());
 }
@@ -31,36 +23,130 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SparkSeed',
+      title: 'Satly',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
         useMaterial3: true,
-        primarySwatch: Colors.blue,
+        primaryColor: AppColors.primary,
+        colorScheme: ColorScheme.light(
+          primary: AppColors.primary,
+          secondary: AppColors.secondary,
+          background: AppColors.background,
+          surface: AppColors.card,
+          error: AppColors.error,
+        ),
         scaffoldBackgroundColor: AppColors.background,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.primaryAccent,
+        appBarTheme: AppBarTheme(
+          backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+          ),
+          titleTextStyle: AppTextStyles.titleLarge.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppColors.textSecondary,
+          selectedLabelStyle: AppTextStyles.labelSmall,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          elevation: 8,
+        ),
+        cardTheme:  CardThemeData(
           elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: EdgeInsets.zero,
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: AppColors.background,
-          selectedItemColor: AppColors.primaryAccent,
-          unselectedItemColor: Colors.grey,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            minimumSize: const Size(double.infinity, 56),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            textStyle: AppTextStyles.labelLarge.copyWith(color: Colors.white),
+            elevation: 0,
+          ),
         ),
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(color: AppColors.textPrimary),
-          bodyMedium: TextStyle(color: AppColors.textSecondary),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.primary,
+            minimumSize: const Size(double.infinity, 56),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            side: BorderSide(color: AppColors.primary),
+            textStyle: AppTextStyles.labelLarge,
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: AppColors.card,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
+          hintStyle: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+        textTheme: TextTheme(
+          displayLarge: AppTextStyles.displayLarge.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          displayMedium: AppTextStyles.displayMedium.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          titleLarge: AppTextStyles.titleLarge.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          titleMedium: AppTextStyles.titleMedium.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          titleSmall: AppTextStyles.titleSmall.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          bodyLarge: AppTextStyles.bodyLarge.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          bodyMedium: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textPrimary,
+          ),
+          bodySmall: AppTextStyles.bodySmall.copyWith(
+            color: AppColors.textSecondary,
+          ),
+          labelLarge: AppTextStyles.labelLarge,
+          labelMedium: AppTextStyles.labelMedium,
+          labelSmall: AppTextStyles.labelSmall,
         ),
       ),
-      // AÑADE ESTO - darkTheme básico para evitar el error
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         useMaterial3: true,
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.dark(
+          primary: AppColors.primary,
+          secondary: AppColors.secondary,
+          background: Color(0xFF121212),
+          surface: Color(0xFF1E1E1E),
+        ),
       ),
-      // Fuerza el tema claro siempre
       themeMode: ThemeMode.light,
       initialRoute: '/',
       routes: {
@@ -71,11 +157,13 @@ class MyApp extends StatelessWidget {
         '/quiz': (context) => const quiz_view.QuizPage(),
         '/dashboard': (context) => const dashboard_view.DashboardPage(),
         '/profile': (context) => const profile_view.ProfilePage(),
-
         '/wallet': (context) => const wallet_view.WalletPage(),
-        '/wallet/receive': (context) => const wallet_receive_view.WalletReceivePage(),
-        '/wallet/withdraw': (context) => const wallet_withdraw_view.WalletWithdrawPage(),
-        '/wallet/history': (context) => const wallet_history_view.WalletHistoryPage(),
+        '/wallet/receive': (context) =>
+            const wallet_receive_view.WalletReceivePage(),
+        '/wallet/withdraw': (context) =>
+            const wallet_withdraw_view.WalletWithdrawPage(),
+        '/wallet/history': (context) =>
+            const wallet_history_view.WalletHistoryPage(),
       },
     );
   }

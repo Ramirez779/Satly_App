@@ -277,4 +277,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-// welcome, register, login, home, landing, lo demás no

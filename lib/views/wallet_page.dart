@@ -1,7 +1,10 @@
+// wallet_page.dart - VERSIÓN COMPLETA MEJORADA
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../utils/colors.dart';
+import '../utils/typography.dart';
+import '../utils/spacing.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -18,82 +21,299 @@ class _WalletPageState extends State<WalletPage> {
   final List<double> _balanceHistory = [40, 60, 80, 100, 90, 110, 120];
   final List<String> _balanceLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
-  // Historial "dummy" para UI (lista que ya tenías)
+  // Historial "dummy" para UI
   final List<Map<String, dynamic>> _transactions = [
     {
       'type': 'earned',
       'title': 'Quiz: Fundamentos Esenciales',
       'amount': 20,
       'date': 'Hoy, 2:30 PM',
+      'icon': Icons.bolt_rounded,
     },
     {
       'type': 'earned',
       'title': 'Quiz: Básico Vol. 2',
       'amount': 20,
       'date': 'Ayer, 5:12 PM',
+      'icon': Icons.quiz_rounded,
     },
     {
       'type': 'withdraw',
       'title': 'Retiro a Wallet Externa',
       'amount': -50,
       'date': '18 Nov, 3:40 PM',
+      'icon': Icons.call_made_rounded,
+    },
+    {
+      'type': 'earned',
+      'title': 'Quiz: Lightning Network',
+      'amount': 30,
+      'date': '17 Nov, 10:15 AM',
+      'icon': Icons.bolt_rounded,
     },
   ];
 
-  // 👇 CARD CON LA GRÁFICA
-  Widget _buildBalanceChartCard() {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: const Text(
+          'Mi Wallet',
+          style: AppTextStyles.titleLarge,
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(24),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // CARD DE BALANCE PRINCIPAL
+            _buildBalanceCard(),
+            SizedBox(height: AppSpacing.xl),
+
+            // BOTONES DE ACCIÓN
+            _buildActionButtons(),
+            SizedBox(height: AppSpacing.xl),
+
+            // GRÁFICA DE EVOLUCIÓN
+            _buildBalanceChartCard(),
+            SizedBox(height: AppSpacing.xl),
+
+            // HISTORIAL RECIENTE
+            _buildRecentHistory(),
+            SizedBox(height: AppSpacing.lg),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBalanceCard() {
     return Container(
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primary,
+            AppColors.secondary,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 18,
-            offset: Offset(0, 10),
+            color: AppColors.primary.withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Evolución de tu saldo (últimos 7 días)',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
+          Text(
+            'Balance Lightning disponible',
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Colors.white.withOpacity(0.9),
             ),
           ),
-          const SizedBox(height: 4),
-          const Text(
-            'Ve si tu saldo va creciendo o se mantiene igual.',
-            style: TextStyle(
-              fontSize: 12,
+          SizedBox(height: AppSpacing.sm),
+
+          // Número animado del balance
+          TweenAnimationBuilder<double>(
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeOutCubic,
+            tween: Tween<double>(
+              begin: 0,
+              end: _walletBalance.toDouble(),
+            ),
+            builder: (context, value, child) {
+              return Text(
+                '${value.toInt()} SATS',
+                style: AppTextStyles.displayLarge.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+              );
+            },
+          ),
+
+          SizedBox(height: AppSpacing.md),
+
+          // Divisor
+          Divider(
+            color: Colors.white.withOpacity(0.2),
+            height: 1,
+          ),
+
+          SizedBox(height: AppSpacing.md),
+
+          // Información adicional
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(AppSpacing.xs),
+                decoration: BoxDecoration(
+                  color: Colors.yellow.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.bolt_rounded,
+                  color: Colors.yellow[300],
+                  size: 16,
+                ),
+              ),
+              SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  'Has ganado un total de $_lifetimeEarned SATS en quizzes',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: Colors.white.withOpacity(0.9),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      children: [
+        Expanded(
+          child: _ActionButton(
+            icon: Icons.call_received_rounded,
+            label: 'Recibir',
+            subtitle: 'Generar invoice',
+            color: AppColors.success,
+            onTap: () {
+              Navigator.pushNamed(context, '/wallet/receive');
+            },
+          ),
+        ),
+        SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: _ActionButton(
+            icon: Icons.call_made_rounded,
+            label: 'Enviar',
+            subtitle: 'Pagar invoice',
+            color: AppColors.error,
+            onTap: () {
+              Navigator.pushNamed(context, '/wallet/withdraw');
+            },
+          ),
+        ),
+        SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: _ActionButton(
+            icon: Icons.history_rounded,
+            label: 'Historial',
+            subtitle: 'Movimientos',
+            color: AppColors.accent,
+            onTap: () {
+              Navigator.pushNamed(context, '/wallet/history');
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBalanceChartCard() {
+    return Container(
+      padding: EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.trending_up_rounded,
+                color: AppColors.primary,
+                size: 20,
+              ),
+              SizedBox(width: AppSpacing.sm),
+              Text(
+                'Evolución de tu saldo',
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.xs),
+          Text(
+            'Últimos 7 días',
+            style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppSpacing.lg),
+
+          // GRÁFICO
           SizedBox(
-            height: 170,
+            height: 150,
             child: LineChart(
               LineChartData(
                 minX: 0,
                 maxX: (_balanceHistory.length - 1).toDouble(),
-                // minY: 0, // opcional
-                gridData: FlGridData(show: false),
-                borderData: FlBorderData(show: false),
+                minY: 0,
+                maxY: _balanceHistory.reduce((a, b) => a > b ? a : b) + 20,
+                gridData: const FlGridData(show: false),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(
+                    color: AppColors.card,
+                    width: 1,
+                  ),
+                ),
                 titlesData: FlTitlesData(
-                  topTitles: AxisTitles(
+                  topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
-                  rightTitles: AxisTitles(
+                  rightTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
                   ),
                   leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 40,
+                      getTitlesWidget: (value, meta) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Text(
+                            '${value.toInt()}',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
@@ -108,8 +328,7 @@ class _WalletPageState extends State<WalletPage> {
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             _balanceLabels[index],
-                            style: const TextStyle(
-                              fontSize: 11,
+                            style: AppTextStyles.bodySmall.copyWith(
                               color: AppColors.textSecondary,
                             ),
                           ),
@@ -121,10 +340,20 @@ class _WalletPageState extends State<WalletPage> {
                 lineBarsData: [
                   LineChartBarData(
                     isCurved: true,
+                    color: AppColors.primary,
                     barWidth: 3,
                     isStrokeCapRound: true,
-                    dotData: FlDotData(show: false),
-                    color: AppColors.primary,
+                    dotData: const FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primary.withOpacity(0.3),
+                          AppColors.primary.withOpacity(0.1),
+                        ],
+                        stops: const [0.5, 1.0],
+                      ),
+                    ),
                     spots: List.generate(
                       _balanceHistory.length,
                       (i) => FlSpot(
@@ -142,101 +371,132 @@ class _WalletPageState extends State<WalletPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Mi Wallet'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget _buildRecentHistory() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            // Card de balance con glassmorphism
-            ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+            Text(
+              'Historial reciente',
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/wallet/history');
+              },
+              child: Text(
+                'Ver todo',
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: AppSpacing.xs),
+        Text(
+          'Ve cómo tus quizzes se convierten en SATS',
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+        SizedBox(height: AppSpacing.md),
+
+        // LISTA DE TRANSACCIONES
+        ..._transactions.map((tx) {
+          final bool isEarned = tx['type'] == 'earned';
+          final int amount = tx['amount'] as int;
+          final IconData icon = tx['icon'] as IconData;
+
+          return Container(
+            margin: EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Material(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              elevation: 2,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {},
                 child: Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.6),
-                      width: 1.4,
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.primary.withOpacity(0.9),
-                        const Color(0xFF64B5F6)
-                            .withOpacity(0.9), // color original
-                      ],
-                    ),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x33000000),
-                        blurRadius: 20,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: EdgeInsets.all(AppSpacing.md),
+                  child: Row(
                     children: [
-                      // Título pequeño
-                      Text(
-                        'Balance Lightning disponible',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                      // Icono
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: isEarned
+                              ? AppColors.success.withOpacity(0.1)
+                              : AppColors.error.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          icon,
+                          color: isEarned ? AppColors.success : AppColors.error,
+                          size: 24,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(width: AppSpacing.md),
 
-                      // Número animado
-                      TweenAnimationBuilder<double>(
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.easeOutCubic,
-                        tween: Tween<double>(
-                          begin: 0,
-                          end: _walletBalance.toDouble(),
-                        ),
-                        builder: (context, value, child) {
-                          return Text(
-                            '${value.toInt()} SATS',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: -0.5,
+                      // Información
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tx['title'] as String,
+                              style: AppTextStyles.bodyLarge.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimary,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          );
-                        },
+                            SizedBox(height: AppSpacing.xs),
+                            Text(
+                              tx['date'] as String,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      SizedBox(width: AppSpacing.sm),
 
-                      const SizedBox(height: 12),
-
-                      Row(
+                      // Monto
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Icon(
-                            Icons.bolt_rounded,
-                            color: Colors.yellow[300],
-                            size: 20,
-                          ),
-                          const SizedBox(width: 6),
                           Text(
-                            'Has ganado un total de $_lifetimeEarned SATS en quizzes',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 13,
+                            '${amount > 0 ? '+' : ''}$amount SATS',
+                            style: AppTextStyles.bodyLarge.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: isEarned ? AppColors.success : AppColors.error,
+                            ),
+                          ),
+                          SizedBox(height: AppSpacing.xs),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.sm,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isEarned
+                                  ? AppColors.success.withOpacity(0.1)
+                                  : AppColors.error.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              isEarned ? 'Ganado' : 'Retirado',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: isEarned ? AppColors.success : AppColors.error,
+                              ),
                             ),
                           ),
                         ],
@@ -246,215 +506,65 @@ class _WalletPageState extends State<WalletPage> {
                 ),
               ),
             ),
-
-            // 👇 AQUÍ VA LA GRÁFICA
-            _buildBalanceChartCard(),
-
-            const SizedBox(height: 24),
-
-            // Botones de acción principales
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _WalletActionButton(
-                  icon: Icons.call_received_rounded,
-                  label: 'Recibir',
-                  subtitle: 'Generar invoice',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/wallet/receive');
-                  },
-                ),
-                const SizedBox(width: 12),
-                _WalletActionButton(
-                  icon: Icons.call_made_rounded,
-                  label: 'Enviar',
-                  subtitle: 'Pagar invoice',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/wallet/withdraw');
-                  },
-                ),
-                const SizedBox(width: 12),
-                _WalletActionButton(
-                  icon: Icons.history_rounded,
-                  label: 'Historial',
-                  subtitle: 'Movimientos',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/wallet/history');
-                  },
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 28),
-
-            // Historial reciente
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Historial reciente',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Ve cómo tus quizzes se convierten en SATS.',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Lista de transacciones
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _transactions.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final tx = _transactions[index];
-                final bool isEarned = tx['type'] == 'earned';
-                final int amount = tx['amount'] as int;
-
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x11000000),
-                        blurRadius: 8,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 36,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: isEarned
-                              ? Colors.green.withOpacity(0.12)
-                              : Colors.red.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          isEarned
-                              ? Icons.bolt_rounded
-                              : Icons.call_made_rounded,
-                          color: isEarned ? Colors.green[700] : Colors.red[700],
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              tx['title'] as String,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              tx['date'] as String,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${amount > 0 ? '+' : ''}$amount SATS',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: isEarned ? Colors.green[700] : Colors.red[700],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+          );
+        }).toList(),
+      ],
     );
   }
 }
 
-class _WalletActionButton extends StatelessWidget {
+class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final String subtitle;
+  final Color color;
   final VoidCallback onTap;
 
-  const _WalletActionButton({
+  const _ActionButton({
     required this.icon,
     required this.label,
     required this.subtitle,
+    required this.color,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      elevation: 2,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x14000000),
-                blurRadius: 10,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
+          padding: EdgeInsets.all(AppSpacing.md),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
-                size: 24,
-                color: AppColors.primary,
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 28,
+                ),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: AppSpacing.sm),
               Text(
                 label,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                style: AppTextStyles.labelMedium.copyWith(
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: AppSpacing.xs),
               Text(
                 subtitle,
-                style: const TextStyle(
-                  fontSize: 11,
+                style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.textSecondary,
                 ),
                 textAlign: TextAlign.center,

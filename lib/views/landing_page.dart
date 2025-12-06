@@ -1,7 +1,9 @@
-// lib/views/landing_page.dart
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import '../widgets/custom_button.dart';
+import '../utils/colors.dart';
+import '../utils/typography.dart';
+import '../utils/spacing.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -38,7 +40,7 @@ class _LandingPageState extends State<LandingPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: OrientationBuilder(
           builder: (context, orientation) {
@@ -53,16 +55,15 @@ class _LandingPageState extends State<LandingPage>
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.white,
-                    Colors.blue.shade50,
-                    Colors.blue.shade100.withAlpha(80),
+                    AppColors.background,
+                    AppColors.card.withOpacity(0.8),
                   ],
                 ),
               ),
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
-                  horizontal: isPortrait ? 24 : 60,
-                  vertical: isPortrait ? 20 : 40,
+                  horizontal: isPortrait ? AppSpacing.lg : AppSpacing.xl * 2,
+                  vertical: isPortrait ? AppSpacing.lg : AppSpacing.xl,
                 ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
@@ -74,12 +75,13 @@ class _LandingPageState extends State<LandingPage>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(height: 20),
+                        SizedBox(height: isPortrait ? 20 : 40),
                         _buildLogoSection(isPortrait),
-                        const SizedBox(height: 20),
+                        SizedBox(height: isPortrait ? 20 : 40),
                         _buildFeaturesSection(isPortrait),
-                        const SizedBox(height: 20),
+                        SizedBox(height: isPortrait ? 20 : 40),
                         _buildCallToActionSection(isPortrait),
+                        SizedBox(height: isPortrait ? 20 : 40),
                       ],
                     ),
                   ),
@@ -100,15 +102,15 @@ class _LandingPageState extends State<LandingPage>
           width: isPortrait ? 140 : 120,
           height: isPortrait ? 140 : 120,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            gradient: LinearGradient(
+              colors: [AppColors.primary, AppColors.secondary],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(35),
             boxShadow: [
               BoxShadow(
-                color: Colors.blueAccent.withAlpha(102),
+                color: AppColors.primary.withOpacity(0.3),
                 blurRadius: 30,
                 offset: const Offset(0, 15),
               ),
@@ -119,30 +121,37 @@ class _LandingPageState extends State<LandingPage>
             children: [
               Icon(Icons.bolt_rounded, size: 50, color: Colors.white),
               SizedBox(height: 8),
-              Text("⚡🎓", style: TextStyle(fontSize: 20)),
+              Text("⚡🎓", 
+                  style: TextStyle(fontSize: 20, color: Colors.white)),
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: isPortrait ? 24 : 32),
         ShaderMask(
           shaderCallback: (bounds) {
-            return const LinearGradient(
-              colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            return LinearGradient(
+              colors: [AppColors.primary, AppColors.secondary],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ).createShader(bounds);
           },
           child: Text(
             "SparkSeed",
-            style: TextStyle(
+            style: AppTextStyles.displayLarge.copyWith(
               fontSize: isPortrait ? 48 : 42,
-              fontWeight: FontWeight.w900,
-              height: 1.1,
-              letterSpacing: -1.0,
               color: Colors.white,
+              fontWeight: FontWeight.w800,
             ),
             textAlign: TextAlign.center,
           ),
+        ),
+        SizedBox(height: isPortrait ? 8 : 12),
+        Text(
+          "Aprende Bitcoin, gana SATS",
+          style: AppTextStyles.titleMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
+          textAlign: TextAlign.center,
         ),
       ],
     );
@@ -150,13 +159,13 @@ class _LandingPageState extends State<LandingPage>
 
   Widget _buildFeaturesSection(bool isPortrait) {
     return Container(
-      padding: EdgeInsets.all(isPortrait ? 20 : 16),
+      padding: EdgeInsets.all(isPortrait ? AppSpacing.lg : AppSpacing.md),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(25),
+            color: Colors.black.withOpacity(0.08),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -170,14 +179,14 @@ class _LandingPageState extends State<LandingPage>
             "Quizzes interactivos y progresivos",
             isPortrait,
           ),
-          SizedBox(height: isPortrait ? 16 : 12),
+          SizedBox(height: isPortrait ? AppSpacing.md : AppSpacing.sm),
           _buildFeatureItem(
             Icons.bolt_rounded,
             "Recompensas Reales",
             "Gana SATS por cada logro",
             isPortrait,
           ),
-          SizedBox(height: isPortrait ? 16 : 12),
+          SizedBox(height: isPortrait ? AppSpacing.md : AppSpacing.sm),
           _buildFeatureItem(
             Icons.trending_up_rounded,
             "Progreso Continuo",
@@ -198,34 +207,36 @@ class _LandingPageState extends State<LandingPage>
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.all(isPortrait ? 12 : 10),
+          padding: EdgeInsets.all(isPortrait ? AppSpacing.md : AppSpacing.sm),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            gradient: LinearGradient(
+              colors: [AppColors.primary, AppColors.secondary],
             ),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, size: isPortrait ? 24 : 20, color: Colors.white),
+          child: Icon(
+            icon, 
+            size: isPortrait ? 24 : 20, 
+            color: Colors.white
+          ),
         ),
-        SizedBox(width: isPortrait ? 16 : 12),
+        SizedBox(width: isPortrait ? AppSpacing.md : AppSpacing.sm),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: isPortrait ? 16 : 14,
+                style: AppTextStyles.titleSmall.copyWith(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
                 ),
               ),
-              SizedBox(height: isPortrait ? 4 : 2),
+              SizedBox(height: AppSpacing.xs),
               Text(
                 subtitle,
-                style: TextStyle(
-                  fontSize: isPortrait ? 14 : 12,
-                  color: Colors.grey.shade600,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textSecondary,
                 ),
               ),
             ],
@@ -247,16 +258,18 @@ class _LandingPageState extends State<LandingPage>
             );
           },
           isPrimary: true,
-          height: isPortrait ? 60 : 56,
+          height: isPortrait ? 56 : 52,
         ),
-        const SizedBox(height: 16),
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
-          padding: EdgeInsets.all(isPortrait ? 16 : 12),
+        SizedBox(height: AppSpacing.md),
+        Container(
+          padding: EdgeInsets.all(isPortrait ? AppSpacing.md : AppSpacing.sm),
           decoration: BoxDecoration(
-            color: Colors.blueAccent.withAlpha(25),
+            color: AppColors.primary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.blueAccent.withAlpha(51)),
+            border: Border.all(
+              color: AppColors.primary.withOpacity(0.2),
+              width: 1,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -264,15 +277,14 @@ class _LandingPageState extends State<LandingPage>
               Icon(
                 Icons.celebration_rounded,
                 size: isPortrait ? 20 : 18,
-                color: Colors.blueAccent,
+                color: AppColors.primary,
               ),
-              SizedBox(width: isPortrait ? 8 : 6),
+              SizedBox(width: isPortrait ? AppSpacing.sm : 6),
               Flexible(
                 child: Text(
                   "¡Únete a la revolución Bitcoin hoy mismo!",
-                  style: TextStyle(
-                    fontSize: isPortrait ? 14 : 12,
-                    color: Colors.blue[800],
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.primary,
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
@@ -281,6 +293,7 @@ class _LandingPageState extends State<LandingPage>
             ],
           ),
         ),
+        SizedBox(height: AppSpacing.md),
       ],
     );
   }
