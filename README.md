@@ -1,4 +1,4 @@
-# ⚡🎓 Satly – Plataforma Educativa Gamificada con Recompensas en Satoshis
+# ⚡🎓 Satly –  App Educativa Gamificada con Recompensas en Satoshis
 
 Este proyecto es una plataforma educativa gamificada que entrega **satoshis gratis** a los usuarios como recompensa por aprender. Con esto se rompe la principal barrera de entrada a la **Lightning Network**: la mayoría no sabe cómo conseguir sus primeros sats ni cómo usarlos de manera práctica.  
 El sistema combina un **backend modular** con un **frontend en Flutter**, todo conectado a **LNBits** y **Firebase Firestore**. La idea es tener control total del flujo de usuario, sus progresos, quizzes, login y recompensas, todo desde un mismo entorno unificado.
